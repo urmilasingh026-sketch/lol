@@ -29,7 +29,7 @@ import {
   Moon, Sun, Maximize, Minimize, Bell, BellOff, Upload, Lock,
   PanelLeftOpen, PanelLeftClose, MoreHorizontal, Grid3X3, List,
   Check, Plus, Minus, RefreshCw, Download, Share2, Copy, Search,
-  ArrowUp, ArrowDown, SkipForward, Rewind, FastForward,
+  ArrowUp, SkipForward, Rewind, FastForward,
   AlignCenter, Book, Code, Brain, Globe, Award, Map, Coffee, Smile,
 } from 'lucide-react';
 
@@ -278,11 +278,11 @@ function NexusTopBar({
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
 
   return (
-    <div className="flex items-center h-12 shrink-0 px-4 gap-3 relative"
+    <div className="flex items-center h-14 shrink-0 px-4 gap-3 relative"
       style={{
-        background: 'linear-gradient(180deg, rgba(8,6,20,0.98) 0%, rgba(10,7,26,0.96) 100%)',
-        borderBottom: '1px solid rgba(255,255,255,0.055)',
-        backdropFilter: 'blur(20px)',
+        background: 'linear-gradient(180deg, rgba(5,3,14,0.99) 0%, rgba(7,5,20,0.98) 100%)',
+        borderBottom: '1px solid rgba(255,255,255,0.07)',
+        backdropFilter: 'blur(28px) saturate(200%)',
       }}>
 
       {/* Top edge shine */}
@@ -310,36 +310,36 @@ function NexusTopBar({
       <div className="w-px h-5 shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
 
       {/* Stats chips */}
-      <div className="flex items-center gap-1.5 flex-1 overflow-x-auto scrollbar-hide">
+      <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-hide">
         {/* WPM */}
-        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
-          style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
-          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(167,139,250,0.55)' }}>WPM</span>
-          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#c4b5fd' }}>{wpm}</span>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
+          style={{ background: 'rgba(139,92,246,0.14)', border: '1px solid rgba(139,92,246,0.32)', boxShadow: '0 0 14px rgba(139,92,246,0.09)' }}>
+          <span className="text-[0.5rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(167,139,250,0.52)' }}>WPM</span>
+          <span className="font-mono font-black text-[0.9rem]" style={{ color: '#c4b5fd' }}>{wpm}</span>
         </div>
         {/* ACC */}
-        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.28)' }}>ACC</span>
-          <span className="font-mono font-black text-[0.65rem]" style={{ color: accColor }}>{accuracy}%</span>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)' }}>
+          <span className="text-[0.5rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(255,255,255,0.28)' }}>ACC</span>
+          <span className="font-mono font-black text-[0.9rem]" style={{ color: accColor }}>{accuracy}%</span>
         </div>
         {/* ERR */}
-        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
-          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.22)' }}>ERR</span>
-          <span className="font-mono font-black text-[0.65rem]" style={{ color: errors > 5 ? '#f87171' : 'rgba(255,255,255,0.3)' }}>{errors}</span>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <span className="text-[0.5rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(255,255,255,0.22)' }}>ERR</span>
+          <span className="font-mono font-black text-[0.9rem]" style={{ color: errors > 5 ? '#f87171' : 'rgba(255,255,255,0.3)' }}>{errors}</span>
         </div>
         {/* Level */}
-        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
-          style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)' }}>
-          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(253,211,77,0.5)' }}>LV</span>
-          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#fde68a' }}>{lvlInfo.level}</span>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
+          style={{ background: 'rgba(251,191,36,0.09)', border: '1px solid rgba(251,191,36,0.22)' }}>
+          <span className="text-[0.5rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(253,211,77,0.5)' }}>LV</span>
+          <span className="font-mono font-black text-[0.9rem]" style={{ color: '#fde68a' }}>{lvlInfo.level}</span>
         </div>
         {/* Streak */}
-        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
-          style={{ background: 'rgba(251,146,60,0.08)', border: '1px solid rgba(251,146,60,0.18)' }}>
-          <Flame className="w-2.5 h-2.5" style={{ color: '#fb923c' }} />
-          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#fdba74' }}>{dailyStreak}</span>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl shrink-0"
+          style={{ background: 'rgba(251,146,60,0.09)', border: '1px solid rgba(251,146,60,0.22)' }}>
+          <Flame className="w-3 h-3" style={{ color: '#fb923c' }} />
+          <span className="font-mono font-black text-[0.9rem]" style={{ color: '#fdba74' }}>{dailyStreak}</span>
         </div>
 
         {isRecording && (
@@ -353,17 +353,17 @@ function NexusTopBar({
 
       {/* Settings toggle */}
       <button onClick={onToggleSidebar} title="Toggle Settings"
-        className="flex items-center gap-1.5 shrink-0 transition-all active:scale-95"
+        className="flex items-center gap-2 shrink-0 transition-all active:scale-95"
         style={{
-          padding: '6px 14px',
-          borderRadius: '12px',
-          background: sidebarOpen ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)',
-          border: sidebarOpen ? '1px solid rgba(139,92,246,0.4)' : '1px solid rgba(255,255,255,0.09)',
+          padding: '9px 18px',
+          borderRadius: '14px',
+          background: sidebarOpen ? 'rgba(139,92,246,0.22)' : 'rgba(255,255,255,0.05)',
+          border: sidebarOpen ? '1px solid rgba(139,92,246,0.48)' : '1px solid rgba(255,255,255,0.10)',
           color: sidebarOpen ? '#c4b5fd' : 'rgba(255,255,255,0.45)',
-          fontSize: '0.56rem', fontWeight: 600,
-          boxShadow: sidebarOpen ? '0 0 14px rgba(139,92,246,0.15)' : 'none',
+          fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em',
+          boxShadow: sidebarOpen ? '0 0 20px rgba(139,92,246,0.22)' : 'none',
         }}>
-        <Settings className="w-3 h-3" />
+        <Settings className="w-3.5 h-3.5" />
         Settings
       </button>
     </div>
@@ -716,16 +716,11 @@ function NexusBottomBar({
 // ════════════════════════════════════════════════════════════════════════════
 function NexusMobileLayout() {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [modeOpen, setModeOpen] = useState(false);
   const {
     wpm, accuracy, xp, dailyStreak, typingMode, setTypingMode,
     isRecording, isPlaying, recordedEvents, startRecording, stopRecording,
-    playRecording, stopPlayback, volume, setVolume, focusMode, setFocusMode,
-    theme, setTheme, resetTyping, performanceMode, setPerformanceMode,
-    ghostMode, setGhostMode, metronomeEnabled, setMetronome, bpm, setBpm,
-    totalKeystrokes, bestWpm, errors, dailyGoalWpm: wpmGoal, loopEnabled, setLoop,
-    blindTypingMode, setBlindTypingMode, dailyChallengeMode, setDailyChallengeMode,
+    playRecording, stopPlayback, volume, setVolume,
+    resetTyping,
   } = useStore(useShallow(s => ({
     wpm: s.wpm, accuracy: s.accuracy, xp: s.xp, dailyStreak: s.dailyStreak,
     typingMode: s.typingMode, setTypingMode: s.setTypingMode,
@@ -733,19 +728,10 @@ function NexusMobileLayout() {
     startRecording: s.startRecording, stopRecording: s.stopRecording,
     playRecording: s.playRecording, stopPlayback: s.stopPlayback,
     volume: s.volume, setVolume: s.setVolume,
-    focusMode: s.focusMode, setFocusMode: s.setFocusMode,
-    theme: s.theme, setTheme: s.setTheme, resetTyping: s.resetTyping,
-    performanceMode: s.performanceMode, setPerformanceMode: s.setPerformanceMode,
-    ghostMode: s.ghostMode, setGhostMode: s.setGhostMode,
-    metronomeEnabled: s.metronomeEnabled, setMetronome: s.setMetronome,
-    bpm: s.bpm, setBpm: s.setBpm,
-    totalKeystrokes: s.totalKeystrokes, bestWpm: s.bestWpm, errors: s.errors,
-    dailyGoalWpm: s.dailyGoalWpm, loopEnabled: s.loopEnabled, setLoop: s.setLoop,
-    blindTypingMode: s.blindTypingMode, setBlindTypingMode: s.setBlindTypingMode,
-    dailyChallengeMode: s.dailyChallengeMode, setDailyChallengeMode: s.setDailyChallengeMode,
+    resetTyping: s.resetTyping,
   })));
 
-  const { current: lvlInfo, progress } = getLevelInfo(xp);
+  const { current: lvlInfo } = getLevelInfo(xp);
   const hasRecording = recordedEvents.length > 0;
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
 
@@ -756,222 +742,131 @@ function NexusMobileLayout() {
   ] as const, [mobileSeasonalMode]);
 
   const modeIdx = MOBILE_MODES.indexOf(typingMode as any);
-  const cycleMode = useCallback(() => setTypingMode(MOBILE_MODES[(modeIdx < 0 ? 0 : modeIdx + 1) % MOBILE_MODES.length] as any), [modeIdx, MOBILE_MODES, setTypingMode]);
-  const cycleModePrev = useCallback(() => setTypingMode(MOBILE_MODES[((modeIdx < 0 ? 0 : modeIdx) - 1 + MOBILE_MODES.length) % MOBILE_MODES.length] as any), [modeIdx, MOBILE_MODES, setTypingMode]);
 
   return (
-    <div className="flex w-full h-full">
-      {/* ── Left vertical control strip ── */}
-      <div className="flex flex-col items-center gap-1.5 py-2 px-1 shrink-0 w-12 relative"
+    <div className="flex flex-col w-full h-full">
+
+      {/* ══ Premium Mobile Top Bar ══ */}
+      <div className="flex items-center h-12 shrink-0 px-3 gap-2 relative"
         style={{
-          background: 'linear-gradient(180deg, rgba(8,6,20,0.98) 0%, rgba(10,7,24,0.97) 100%)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
-          backdropFilter: 'blur(20px)',
+          background: 'linear-gradient(180deg, rgba(5,3,14,0.99) 0%, rgba(8,6,22,0.98) 100%)',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          backdropFilter: 'blur(28px) saturate(200%)',
         }}>
 
-        {/* Right edge glow line */}
-        <div className="absolute right-0 top-8 bottom-8 w-px pointer-events-none"
-          style={{ background: 'linear-gradient(180deg, transparent, rgba(139,92,246,0.3) 40%, rgba(139,92,246,0.3) 60%, transparent)' }} />
+        {/* Top edge aurora shimmer */}
+        <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5) 30%, rgba(96,165,250,0.35) 70%, transparent)' }} />
 
         {/* Logo */}
-        <img src={logoImg} alt="UK Aurora" className="w-8 h-8 rounded-xl object-contain shrink-0"
-          style={{ boxShadow: '0 0 10px rgba(139,92,246,0.35)' }} />
+        <img src={logoImg} alt="UK Aurora" className="w-7 h-7 rounded-xl object-contain shrink-0"
+          style={{ boxShadow: '0 0 14px rgba(139,92,246,0.55)' }} />
 
-        {/* Divider */}
-        <div className="w-7 h-px shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
-
-        {/* Live WPM — tap for stats */}
-        <button onClick={() => setStatsOpen(v => !v)} className="flex flex-col items-center gap-0 text-center shrink-0 py-0.5 px-1 rounded-lg w-full transition-all hover:bg-white/05" title="Stats">
-          <span className="text-[0.76rem] font-black leading-none" style={{ color: '#c4b5fd' }}>{wpm}</span>
-          <span className="text-[0.34rem] uppercase tracking-wider font-semibold" style={{ color: 'rgba(167,139,250,0.4)' }}>WPM</span>
-        </button>
-
-        {/* Accuracy */}
-        <div className="flex flex-col items-center gap-0 text-center shrink-0">
-          <span className="text-[0.65rem] font-black leading-none" style={{ color: accColor }}>{accuracy}%</span>
-          <span className="text-[0.34rem] uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.2)' }}>ACC</span>
-        </div>
-
-        {/* Streak */}
-        <div className="flex flex-col items-center gap-0 text-center shrink-0">
-          <Flame className="w-3.5 h-3.5" style={{ color: '#fb923c' }} />
-          <span className="text-[0.44rem] font-black" style={{ color: '#fdba74' }}>{dailyStreak}</span>
-        </div>
-
-        {/* Level progress bar */}
-        <div className="flex flex-col items-center gap-0.5 text-center shrink-0 w-full px-1.5">
-          <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
-            <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #7c3aed, #c026d3)' }} />
+        {/* Live stats row */}
+        <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+          {/* WPM */}
+          <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+            style={{ background: 'rgba(139,92,246,0.14)', border: '1px solid rgba(139,92,246,0.30)' }}>
+            <span className="text-[0.42rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(167,139,250,0.5)' }}>WPM</span>
+            <span className="font-mono font-black text-[0.76rem]" style={{ color: '#c4b5fd' }}>{wpm}</span>
           </div>
-          <span className="text-[0.34rem] uppercase font-bold" style={{ color: 'rgba(167,139,250,0.35)' }}>Lv{lvlInfo.level}</span>
+          {/* ACC */}
+          <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)' }}>
+            <span className="text-[0.42rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(255,255,255,0.28)' }}>ACC</span>
+            <span className="font-mono font-black text-[0.76rem]" style={{ color: accColor }}>{accuracy}%</span>
+          </div>
+          {/* Streak */}
+          <div className="flex items-center gap-1 px-1.5 py-1 rounded-lg shrink-0"
+            style={{ background: 'rgba(251,146,60,0.09)', border: '1px solid rgba(251,146,60,0.22)' }}>
+            <Flame className="w-2.5 h-2.5" style={{ color: '#fb923c' }} />
+            <span className="font-mono font-black text-[0.68rem]" style={{ color: '#fdba74' }}>{dailyStreak}</span>
+          </div>
+          {/* Level progress */}
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg shrink-0"
+            style={{ background: 'rgba(251,191,36,0.07)', border: '1px solid rgba(251,191,36,0.18)' }}>
+            <span className="text-[0.42rem] uppercase tracking-widest font-bold" style={{ color: 'rgba(253,211,77,0.45)' }}>LV</span>
+            <span className="font-mono font-black text-[0.68rem]" style={{ color: '#fde68a' }}>{lvlInfo.level}</span>
+          </div>
         </div>
 
-        <div className="w-7 h-px shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
-
-        {/* Prev mode */}
-        <MobileCtrlBtn onClick={cycleModePrev} title="Previous Mode">
-          <ArrowUp className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Next mode */}
-        <MobileCtrlBtn onClick={cycleMode} title="Next Mode" className="text-violet-400">
-          <Shuffle className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Record */}
-        <MobileCtrlBtn
-          onClick={isRecording ? stopRecording : startRecording}
-          title={isRecording ? 'Stop' : 'Record'}
-          className={isRecording ? 'text-red-400 border-red-500/40 bg-red-500/15 animate-pulse' : 'text-rose-400/70'}
-        >
-          {isRecording ? <Square className="w-3 h-3 fill-current" /> : <Circle className="w-3 h-3" />}
-        </MobileCtrlBtn>
-
-        {/* Play */}
-        {(hasRecording || isPlaying) && (
+        {/* Action buttons */}
+        <div className="flex items-center gap-1 shrink-0">
+          {/* Record */}
           <MobileCtrlBtn
-            onClick={isPlaying ? stopPlayback : playRecording}
-            title={isPlaying ? 'Stop' : 'Play'}
-            className={isPlaying ? 'text-emerald-400 border-emerald-400/40 bg-emerald-500/10' : ''}
+            onClick={isRecording ? stopRecording : startRecording}
+            title={isRecording ? 'Stop Recording' : 'Record'}
+            className={isRecording ? 'text-red-400 border-red-500/40 bg-red-500/15 animate-pulse' : 'text-rose-400/60'}
           >
-            {isPlaying ? <Pause className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3" />}
+            {isRecording ? <Square className="w-3 h-3 fill-current" /> : <Circle className="w-3 h-3" />}
           </MobileCtrlBtn>
-        )}
-
-        {/* Loop */}
-        <MobileCtrlBtn onClick={() => setLoop(!loopEnabled)} active={loopEnabled} title="Loop">
-          <Repeat className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Volume toggle */}
-        <MobileCtrlBtn onClick={() => setVolume(volume === 0 ? 0.7 : 0)} title={volume === 0 ? 'Unmute' : 'Mute'}>
-          {volume === 0 ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
-        </MobileCtrlBtn>
-
-        {/* Focus */}
-        <MobileCtrlBtn onClick={() => setFocusMode(!focusMode)} active={focusMode} title="Focus Mode">
-          <Focus className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Performance */}
-        <MobileCtrlBtn onClick={() => setPerformanceMode(!performanceMode)} active={performanceMode} title="Performance">
-          <Zap className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Ghost */}
-        <MobileCtrlBtn onClick={() => setGhostMode(!ghostMode)} active={ghostMode} title="Ghost Mode">
-          <Ghost className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Metronome */}
-        <MobileCtrlBtn onClick={() => setMetronome(!metronomeEnabled)} active={metronomeEnabled} title="Metronome">
-          <Music className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        {/* Reset */}
-        <MobileCtrlBtn onClick={resetTyping} title="Reset">
-          <RotateCcw className="w-3 h-3" />
-        </MobileCtrlBtn>
-
-        <div className="flex-1" />
-
-        {/* Settings gear — always at bottom */}
-        <button
-          onClick={() => setSettingsOpen(true)}
-          className="w-9 h-9 rounded-xl flex items-center justify-center bg-violet-500/25 border border-violet-500/50 text-violet-300 hover:bg-violet-500/35 transition-all shrink-0"
-          title="Settings"
-        >
-          <Settings className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* ── Right: content + keyboard ── */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-0">
-
-        {/* Slim mode pill bar */}
-        <div className="flex items-center gap-0.5 px-2 py-0.5 border-b border-white/05 bg-black/20 backdrop-blur-sm shrink-0 overflow-x-auto scrollbar-hide">
-          {/* Mode prev/next arrows */}
-          <button onClick={cycleModePrev} className="w-5 h-5 rounded-lg flex items-center justify-center text-white/25 hover:text-white/60 hover:bg-white/08 transition-all shrink-0">
-            <ArrowUp className="w-2.5 h-2.5" />
+          {/* Play recording */}
+          {(hasRecording || isPlaying) && (
+            <MobileCtrlBtn
+              onClick={isPlaying ? stopPlayback : playRecording}
+              title={isPlaying ? 'Stop Playback' : 'Play'}
+              className={isPlaying ? 'text-emerald-400 border-emerald-400/40 bg-emerald-500/10' : ''}
+            >
+              {isPlaying ? <Pause className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3" />}
+            </MobileCtrlBtn>
+          )}
+          {/* Volume */}
+          <MobileCtrlBtn onClick={() => setVolume(volume === 0 ? 0.7 : 0)} title={volume === 0 ? 'Unmute' : 'Mute'}>
+            {volume === 0 ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+          </MobileCtrlBtn>
+          {/* Reset */}
+          <MobileCtrlBtn onClick={resetTyping} title="Reset">
+            <RotateCcw className="w-3 h-3" />
+          </MobileCtrlBtn>
+          {/* Settings */}
+          <button
+            onClick={() => setSettingsOpen(true)}
+            title="Settings"
+            className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all active:scale-95"
+            style={{
+              background: 'rgba(139,92,246,0.2)',
+              border: '1px solid rgba(139,92,246,0.45)',
+              color: '#c4b5fd',
+              boxShadow: '0 0 12px rgba(139,92,246,0.18)',
+            }}
+          >
+            <Settings className="w-3.5 h-3.5" />
           </button>
-          {MOBILE_MODES.map(m => (
-            <button key={m}
-              onClick={() => setTypingMode(m as any)}
-              className={cn(
-                'px-2 py-0.5 rounded-full text-[0.48rem] font-semibold whitespace-nowrap border transition-all shrink-0',
-                typingMode === m
-                  ? 'bg-violet-500/30 border-violet-500/60 text-violet-200'
-                  : 'bg-white/04 border-white/07 text-white/30 hover:text-white/55'
-              )}>
-              {m}
-            </button>
-          ))}
-          <button onClick={cycleMode} className="w-5 h-5 rounded-lg flex items-center justify-center text-white/25 hover:text-white/60 hover:bg-white/08 transition-all shrink-0">
-            <ArrowDown className="w-2.5 h-2.5" />
-          </button>
-        </div>
-
-        {/* Interaction area */}
-        <div className="flex-1 min-h-0 overflow-hidden">
-          <InteractionArea />
-        </div>
-
-        {/* Keyboard */}
-        <div className="shrink-0">
-          <Keyboard />
         </div>
       </div>
 
-      {/* ── Mobile Stats Modal ── */}
-      {statsOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={() => setStatsOpen(false)} />
-          <div className="fixed top-2 left-14 right-2 z-50 bg-[#0c0c18]/98 backdrop-blur-2xl border border-white/12 rounded-2xl p-4 shadow-2xl max-h-[85vh] overflow-y-auto" style={{ touchAction: 'pan-y' }}>
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[0.62rem] font-bold text-white/70 uppercase tracking-wider flex items-center gap-1.5">
-                <Activity className="w-3.5 h-3.5 text-violet-400" /> Live Stats & Progress
-              </p>
-              <button onClick={() => setStatsOpen(false)} className="w-6 h-6 rounded-lg flex items-center justify-center hover:bg-white/08 text-white/40">
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
+      {/* ══ Mode pill row ══ */}
+      <div className="flex items-center gap-0.5 px-2 py-1 border-b border-white/05 shrink-0 overflow-x-auto scrollbar-hide"
+        style={{ background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(12px)' }}>
+        {MOBILE_MODES.map(m => (
+          <button key={m}
+            onClick={() => setTypingMode(m as any)}
+            className="px-2.5 py-0.5 rounded-full text-[0.5rem] font-semibold whitespace-nowrap border transition-all shrink-0"
+            style={typingMode === m ? {
+              background: 'rgba(139,92,246,0.28)',
+              borderColor: 'rgba(139,92,246,0.55)',
+              color: '#ddd6fe',
+            } : {
+              background: 'rgba(255,255,255,0.03)',
+              borderColor: 'rgba(255,255,255,0.07)',
+              color: 'rgba(255,255,255,0.3)',
+            }}>
+            {m}
+          </button>
+        ))}
+      </div>
 
-            {/* Key stats grid */}
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              {[
-                { label: 'WPM', value: wpm, color: '#a78bfa', icon: '⚡' },
-                { label: 'Accuracy', value: `${accuracy}%`, color: accColor, icon: '🎯' },
-                { label: 'Errors', value: errors, color: errors > 5 ? '#f87171' : '#6b7280', icon: '❌' },
-                { label: 'Best WPM', value: bestWpm, color: '#fbbf24', icon: '🏆' },
-                { label: 'Streak', value: `${dailyStreak}d`, color: '#fb923c', icon: '🔥' },
-                { label: 'Keys', value: totalKeystrokes > 999 ? `${(totalKeystrokes / 1000).toFixed(1)}k` : totalKeystrokes, color: '#60a5fa', icon: '⌨️' },
-              ].map(s => (
-                <div key={s.label} className="flex flex-col items-center gap-0.5 py-2 rounded-xl bg-white/04 border border-white/08">
-                  <span className="text-sm">{s.icon}</span>
-                  <span className="text-sm font-black font-mono" style={{ color: s.color }}>{s.value}</span>
-                  <span className="text-[0.42rem] text-white/30 uppercase">{s.label}</span>
-                </div>
-              ))}
-            </div>
+      {/* ══ Interaction Area ══ */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <InteractionArea />
+      </div>
 
-            {/* XP & Level */}
-            <div className="mb-3 px-2 py-2 rounded-xl bg-white/04 border border-white/08">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[0.52rem] font-bold text-violet-300">Level {lvlInfo.level} — {lvlInfo.title}</span>
-                <span className="text-[0.5rem] text-white/40">{xp} XP</span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-white/08 overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-400 rounded-full transition-all" style={{ width: `${progress}%` }} />
-              </div>
-              <p className="text-[0.44rem] text-white/25 mt-0.5">{Math.round(progress)}% to next level</p>
-            </div>
+      {/* ══ Keyboard ══ */}
+      <div className="shrink-0">
+        <Keyboard />
+      </div>
 
-            <StatsBar />
-          </div>
-        </>
-      )}
-
-      {/* ── Mobile Full Settings Panel ── */}
+      {/* ══ Mobile Settings Sheet ══ */}
       <MobileSettingsSheet isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );

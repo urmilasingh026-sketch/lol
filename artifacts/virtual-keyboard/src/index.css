@@ -165,19 +165,20 @@
 .theme-aurora .workspace-bg,
 .workspace-bg {
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%,   rgba(120, 40, 220, 0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 55% 45% at 15% 100%,  rgba(40,  70, 220, 0.12) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 38% at 88% 82%,   rgba(220, 55, 130, 0.09) 0%, transparent 60%),
-    radial-gradient(ellipse 35% 30% at 80% 10%,   rgba(80,  40, 200, 0.06) 0%, transparent 55%),
-    #07061a;
+    radial-gradient(ellipse 85% 65% at 50% -8%,  rgba(130, 40, 245, 0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 52% at 12% 100%, rgba(40,  70, 245, 0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 44% at 90% 85%,  rgba(225, 55, 145, 0.14) 0%, transparent 58%),
+    radial-gradient(ellipse 40% 34% at 80% 8%,   rgba(80,  40, 220, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 25% at 35% 55%,  rgba(90,  20, 200, 0.06) 0%, transparent 50%),
+    #050316;
 }
 .theme-aurora .workspace-gradient,
 .workspace-gradient {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -5%,  rgba(120, 40, 230, 0.22) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 32% at  8% 92%,  rgba(50,  90, 230, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse 32% 28% at 94% 85%,  rgba(230, 55, 130, 0.09) 0%, transparent 52%),
-    radial-gradient(ellipse 25% 20% at 72% 5%,   rgba(100, 60, 210, 0.07) 0%, transparent 50%);
+    radial-gradient(ellipse 95% 58% at 50% -10%, rgba(135, 40, 250, 0.34) 0%, transparent 60%),
+    radial-gradient(ellipse 48% 38% at  7% 92%,  rgba(55,  90, 240, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 38% 32% at 95% 85%,  rgba(240, 55, 140, 0.13) 0%, transparent 52%),
+    radial-gradient(ellipse 30% 24% at 74% 4%,   rgba(105, 60, 220, 0.11) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -186,8 +187,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.028) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.038) 1px, transparent 1px);
+  background-size: 24px 24px;
   pointer-events: none;
   z-index: 0;
 }
@@ -309,28 +310,29 @@
 /* ======================= GLASS KEYBOARD STYLES ======================= */
 
 .glass-keyboard-body {
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.35) 100%);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.42) 100%);
+  backdrop-filter: blur(22px) saturate(175%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.2);
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 80px rgba(120, 40, 240, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    inset 0 -1px 0 rgba(0,0,0,0.28);
   transform: translateZ(0);
   touch-action: none;
   contain: layout;
 }
 
 .glass-key {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.075) 0%, rgba(255,255,255,0.03) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0%, rgba(255,255,255,0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-  transition: transform 60ms ease-out, box-shadow 60ms ease-out, background 60ms ease-out, border-color 60ms ease-out;
+    0 4px 12px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28);
+  transition: transform 55ms ease-out, box-shadow 55ms ease-out, background 55ms ease-out, border-color 55ms ease-out;
   position: relative;
   will-change: transform;
   contain: layout paint style;
@@ -338,19 +340,21 @@
 }
 
 .glass-key:hover:not(.pressed) {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.085) 0%, rgba(255,255,255,0.035) 100%);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.10) 0%, rgba(255,255,255,0.04) 100%);
+  border-color: rgba(255, 255, 255, 0.20);
   box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    0 4px 16px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(139,92,246,0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
 }
 
 .glass-key.pressed {
-  transform: translateY(2px) scale(0.967);
+  transform: translateY(2px) scale(0.965);
   box-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.55),
-    inset 0 2px 5px rgba(0, 0, 0, 0.35);
+    0 1px 4px rgba(0, 0, 0, 0.60),
+    inset 0 2px 6px rgba(0, 0, 0, 0.40),
+    0 0 12px rgba(139,92,246,0.2);
 }
 
 /* ======================= GLASS PANEL ======================= */
@@ -364,11 +368,11 @@
 
 /* ======================= TOP BAR ======================= */
 .top-bar {
-  background: rgba(8, 8, 20, 0.75);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  background: rgba(6, 5, 16, 0.95);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* ======================= LOGO PULSE ======================= */
@@ -385,42 +389,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.2rem 0.65rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 0.4rem;
-  min-width: 3.2rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  min-width: 3.6rem;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .stat-pill:hover {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
 }
 
 .stat-pill .label {
-  font-size: 0.48rem;
-  letter-spacing: 0.14em;
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.38);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .stat-pill .value {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
   font-family: 'JetBrains Mono', monospace;
   line-height: 1.2;
 }
 
 /* ======================= INTERACTION AREA ======================= */
 .interaction-area {
-  background: rgba(0, 0, 0, 0.32);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(139,92,246,0.18);
   border-radius: 0.875rem;
+  box-shadow: 0 0 30px rgba(120,40,240,0.06), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .practice-text {
