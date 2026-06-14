@@ -835,27 +835,6 @@ function NexusMobileLayout() {
         </div>
       </div>
 
-      {/* ══ Mode pill row ══ */}
-      <div className="flex items-center gap-0.5 px-2 py-1 border-b border-white/05 shrink-0 overflow-x-auto scrollbar-hide"
-        style={{ background: 'rgba(0,0,0,0.25)', backdropFilter: 'blur(12px)' }}>
-        {MOBILE_MODES.map(m => (
-          <button key={m}
-            onClick={() => setTypingMode(m as any)}
-            className="px-2.5 py-0.5 rounded-full text-[0.5rem] font-semibold whitespace-nowrap border transition-all shrink-0"
-            style={typingMode === m ? {
-              background: 'rgba(139,92,246,0.28)',
-              borderColor: 'rgba(139,92,246,0.55)',
-              color: '#ddd6fe',
-            } : {
-              background: 'rgba(255,255,255,0.03)',
-              borderColor: 'rgba(255,255,255,0.07)',
-              color: 'rgba(255,255,255,0.3)',
-            }}>
-            {m}
-          </button>
-        ))}
-      </div>
-
       {/* ══ Interaction Area ══ */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <InteractionArea />
