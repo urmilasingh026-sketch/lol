@@ -102,6 +102,13 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
   html {
     overscroll-behavior: none;
@@ -507,9 +514,6 @@
   box-shadow: 0 -24px 80px rgba(0, 0, 0, 0.75);
 }
 
-/* ======================= SCROLLBAR HIDDEN EVERYWHERE ======================= */
-* { scrollbar-width: none; -ms-overflow-style: none; }
-::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
 
 /* ======================= RANGE INPUT ======================= */
 input[type="range"] {

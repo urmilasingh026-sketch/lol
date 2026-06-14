@@ -342,7 +342,7 @@ const SIDEBAR_CATEGORIES = [
   },
   {
     id: 'system', label: 'System', icon: Bolt, color: '#fbbf24',
-    tabs: ['shortcuts2', 'social', 'tips'],
+    tabs: ['shortcuts2'],
   },
   {
     id: 'data', label: 'Data', icon: Save, color: '#818cf8',

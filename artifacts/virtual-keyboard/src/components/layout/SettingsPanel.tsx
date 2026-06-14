@@ -8,9 +8,9 @@ import { getLevelInfo } from '@/lib/achievements';
 import {
   Keyboard, Volume2, Wand2, Palette, Sliders, Music, Eye, Accessibility,
   Zap, Database, Mic2, Trophy, ChevronRight, RotateCcw, Search,
-  Swords, Users, LayoutDashboard, Radio, Sparkles,
-   Lock,
-  Cpu, Lightbulb,
+  Swords, LayoutDashboard, Radio, Sparkles,
+  Lock,
+  Cpu,
   SlidersHorizontal, Play, Pause, Square, Circle, Repeat, VolumeX,
   Ghost, Focus, EyeOff, Target, Download, Command, HelpCircle,
   Dices, Flame, BarChart2,
@@ -1766,76 +1766,7 @@ function ChallengesTab() {
   );
 }
 
-// ── Social Tab ─────────────────────────────────────────────────────────────
-function SocialTab() {
-  const s = useStore();
-  const avatars = ['🎹','🎸','🎺','🎻','🥁','🎷','🎵','🎶','🎤','🎧','🎼','🎭','🏆','👑','⚡','🌟'];
-  return (
-    <div className="space-y-2">
-      <div className="text-[0.6rem] uppercase tracking-widest text-white/30 mb-2 font-bold">Player Profile</div>
-      <div className="bg-white/05 rounded-xl p-3 mb-3">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="text-3xl">{avatars[s.playerAvatarId % avatars.length]}</div>
-          <div>
-            <div className="text-sm font-bold text-white">{s.playerTag || 'Anonymous'}</div>
-            <div className="text-[0.6rem] text-white/40">{s.playerBio || 'No bio yet'}</div>
-          </div>
-        </div>
-      </div>
-      <label className="block text-[0.6rem] text-white/40 mb-1">Player Tag</label>
-      <input value={s.playerTag} onChange={e => s.setPlayerTag(e.target.value)}
-        placeholder="Your username..."
-        className="w-full bg-white/08 rounded-lg px-2.5 py-1.5 text-[0.7rem] text-white border border-white/10 focus:outline-none focus:border-violet-500/50 mb-1" />
-      <label className="block text-[0.6rem] text-white/40 mb-1">Bio</label>
-      <input value={s.playerBio} onChange={e => s.setPlayerBio(e.target.value)}
-        placeholder="Tell the community about yourself..."
-        className="w-full bg-white/08 rounded-lg px-2.5 py-1.5 text-[0.7rem] text-white border border-white/10 focus:outline-none focus:border-violet-500/50 mb-1" />
-      <Select label="Country" value={s.playerCountry} onChange={s.setPlayerCountry}
-        options={['','🇬🇧 UK','🇺🇸 USA','🇯🇵 Japan','🇩🇪 Germany','🇫🇷 France','🇰🇷 Korea','🇦🇺 Australia','🇧🇷 Brazil','🇨🇳 China','🇮🇳 India','🇨🇦 Canada']} />
-      <div className="text-[0.6rem] uppercase tracking-widest text-white/30 mt-3 mb-1 font-bold">Avatar</div>
-      <div className="grid grid-cols-8 gap-1">
-        {avatars.map((a, i) => (
-          <button key={i} onClick={() => s.setPlayerAvatarId(i)}
-            className={`text-lg p-1 rounded-lg transition-all ${s.playerAvatarId === i ? 'bg-violet-500/30 ring-1 ring-violet-400' : 'hover:bg-white/08'}`}>
-            {a}
-          </button>
-        ))}
-      </div>
-      <div className="text-[0.6rem] uppercase tracking-widest text-white/30 mt-3 mb-1 font-bold">Community Settings</div>
-      <div className="grid grid-cols-2 gap-x-2">
-        <Toggle label="Leaderboard" desc="Show global leaderboard" checked={s.showLeaderboard} onChange={() => s.setShowLeaderboard(!s.showLeaderboard)} />
-        <Toggle label="Share Results" desc="Auto-share session results" checked={s.shareResults} onChange={() => s.setShareResults(!s.shareResults)} />
-        <Toggle label="Public Profile" desc="Make profile visible" checked={s.publicProfile} onChange={() => s.setPublicProfile(!s.publicProfile)} />
-        <Toggle label="Friends" desc="Enable friends list" checked={s.friendsEnabled} onChange={() => s.setFriendsEnabled(!s.friendsEnabled)} />
-      </div>
-      <Select label="Leaderboard Scope" value={s.leaderboardScope} onChange={s.setLeaderboardScope}
-        options={['global','regional','friends','weekly','monthly','alltime']} />
-      <div className="text-[0.6rem] uppercase tracking-widest text-white/30 mt-3 mb-1 font-bold">Profiles</div>
-      {([0,1,2] as const).map(i => {
-        const names = [s.profileName0, s.profileName1, s.profileName2];
-        const colors = [s.profileColor0, s.profileColor1, s.profileColor2];
-        const icons = [s.profileIcon0, s.profileIcon1, s.profileIcon2];
-        const setName = [s.setProfileName0, s.setProfileName1, s.setProfileName2][i];
-        const setColor = [s.setProfileColor0, s.setProfileColor1, s.setProfileColor2][i];
-        return (
-          <div key={i} className="flex items-center gap-2 bg-white/05 rounded-lg p-2">
-            <div className="text-base">{icons[i]}</div>
-            <input value={names[i]} onChange={e => setName(e.target.value)}
-              className="flex-1 bg-transparent text-[0.7rem] text-white focus:outline-none" />
-            <input type="color" value={colors[i]} onChange={e => setColor(e.target.value)}
-              className="h-5 w-8 rounded cursor-pointer" />
-            <button onClick={() => s.setActiveProfile(i as 0|1|2)}
-              className={`text-[0.55rem] px-1.5 py-0.5 rounded-lg transition-all ${s.activeProfile===i ? 'bg-violet-500/40 text-violet-300' : 'text-white/30 hover:text-white/60'}`}>
-              {s.activeProfile===i ? 'Active' : 'Use'}
-            </button>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// ── Labs Tab ──────────────────────────────────────────────────────────────
+// ── Achievements Tab ──────────────────────────────────────────────────────────
 function AchievementsTab() {
   const { unlockedAchievements, xp, bestWpm, accuracy, totalKeystrokes, totalSessions, totalWordsTyped, dailyStreak } = useStore();
   const { current: lvlInfo, next: nextLvl, progress } = getLevelInfo(xp);
@@ -2006,99 +1937,6 @@ function Shortcuts2Tab() {
   );
 }
 
-// ── Gamify Tab ────────────────────────────────────────────────────────────────
-function TipsTab() {
-  const [showTips, setShowTips] = useState(true);
-  const [tipFrequency, setTipFrequency] = useState('session');
-  const [tipCategory, setTipCategory] = useState('all');
-  const [beginnerTips, setBeginnerTips] = useState(true);
-  const [advancedTips, setAdvancedTips] = useState(true);
-  const [musicTips, setMusicTips] = useState(true);
-  const [typingTips, setTypingTips] = useState(true);
-  const [shortcutTips, setShortcutTips] = useState(true);
-  const [proTips, setProTips] = useState(false);
-  const [dismissedTips] = useState<string[]>([]);
-  const [tipPosition, setTipPosition] = useState('bottom');
-  const [tipDuration, setTipDuration] = useState(5000);
-  const [tipAnimation, setTipAnimation] = useState('fade');
-  const [interactiveTips, setInteractiveTips] = useState(false);
-  const [tipSound, setTipSound] = useState(false);
-  const [contextualTips, setContextualTips] = useState(true);
-  const [tipLanguage, setTipLanguage] = useState('english');
-
-  const TIPS = [
-    { cat:'Typing', text:'Keep your fingers on the home row (ASDF JKL;) for maximum speed.' },
-    { cat:'Typing', text:'Look at the screen, not your keyboard. Blind typing is 40% faster.' },
-    { cat:'Typing', text:'Practice accuracy first — speed follows naturally.' },
-    { cat:'Typing', text:'Try the Pomodoro technique: 25 min focus, 5 min break.' },
-    { cat:'Music', text:'Press keys rhythmically to create musical patterns!' },
-    { cat:'Music', text:'Try chord mode and press multiple keys simultaneously.' },
-    { cat:'Music', text:'The BPM slider controls metronome and arpeggio speed.' },
-    { cat:'Music', text:'Change the scale in Musical settings to compose in any key.' },
-    { cat:'Shortcuts', text:'Press Ctrl+K to open the command palette.' },
-    { cat:'Shortcuts', text:'Press F1 anytime to see all keyboard shortcuts.' },
-    { cat:'Shortcuts', text:'Ctrl+R resets your current session.' },
-    { cat:'Pro', text:'Enable Ghost Mode to type without seeing your text — brutal training.' },
-    { cat:'Pro', text:'Combine Blind Mode with a timer for maximum challenge.' },
-    { cat:'Pro', text:'The FX2 tab has a 7-band EQ for precise sound shaping.' },
-    { cat:'Pro', text:'Record your typing session and play it back as music!' },
-    { cat:'Beginner', text:'Start with the Free Mode to get comfortable with the keyboard.' },
-    { cat:'Beginner', text:'The difficulty presets (Easy/Normal/Hard/Expert) adjust text complexity.' },
-    { cat:'Beginner', text:'Check Achievements to see your progress milestones.' },
-  ];
-
-  const filteredTips = TIPS.filter(t => tipCategory === 'all' || t.cat === tipCategory);
-
-  return (
-    <div className="space-y-2">
-      <SectionLabel>Tip Settings</SectionLabel>
-      <Toggle label="Show Tips" desc="Display contextual tips" checked={showTips} onChange={() => setShowTips(v=>!v)} />
-      <Select label="Tip Frequency" value={tipFrequency} onChange={setTipFrequency}
-        options={['always','session','daily','weekly','never']} />
-      <Select label="Tip Position" value={tipPosition} onChange={setTipPosition}
-        options={['bottom','top','left','right','center','toast']} />
-      <Select label="Animation" value={tipAnimation} onChange={setTipAnimation}
-        options={['fade','slide','bounce','none']} />
-      <Select label="Tip Language" value={tipLanguage} onChange={setTipLanguage}
-        options={['english','spanish','french','german','japanese','hindi','arabic']} />
-      <Slider label="Tip Duration" value={tipDuration} min={1000} max={15000} onChange={setTipDuration} unit="ms" />
-      <SectionLabel>Tip Categories</SectionLabel>
-      <div className="grid grid-cols-2 gap-x-2">
-        <Toggle label="Typing Tips" checked={typingTips} onChange={() => setTypingTips(v=>!v)} />
-        <Toggle label="Music Tips" checked={musicTips} onChange={() => setMusicTips(v=>!v)} />
-        <Toggle label="Shortcut Tips" checked={shortcutTips} onChange={() => setShortcutTips(v=>!v)} />
-        <Toggle label="Beginner Tips" checked={beginnerTips} onChange={() => setBeginnerTips(v=>!v)} />
-        <Toggle label="Advanced Tips" checked={advancedTips} onChange={() => setAdvancedTips(v=>!v)} />
-        <Toggle label="Pro Tips" checked={proTips} onChange={() => setProTips(v=>!v)} />
-        <Toggle label="Interactive Tips" desc="Click-through tutorials" checked={interactiveTips} onChange={() => setInteractiveTips(v=>!v)} />
-        <Toggle label="Contextual Tips" desc="Tips based on current mode" checked={contextualTips} onChange={() => setContextualTips(v=>!v)} />
-        <Toggle label="Tip Sound" desc="Play sound with tips" checked={tipSound} onChange={() => setTipSound(v=>!v)} />
-      </div>
-      <SectionLabel>Browse Tips</SectionLabel>
-      <div className="flex flex-wrap gap-1 mb-2">
-        {['all','Typing','Music','Shortcuts','Pro','Beginner'].map(c => (
-          <button key={c} onClick={() => setTipCategory(c)}
-            className={cn('px-2 py-0.5 rounded-lg text-[0.5rem] border transition-all',
-              tipCategory===c?'bg-yellow-500/25 border-yellow-500/50 text-yellow-200':'bg-white/05 border-white/08 text-white/40 hover:text-white/60')}>
-            {c}
-          </button>
-        ))}
-      </div>
-      <div className="space-y-1.5 max-h-40 overflow-y-auto" style={{ touchAction: 'pan-y' }}>
-        {filteredTips.map((tip, i) => (
-          <div key={i} className="flex gap-2 p-2 rounded-xl bg-yellow-500/08 border border-yellow-500/20">
-            <span className="text-yellow-400 text-sm shrink-0">💡</span>
-            <div>
-              <span className="text-[0.44rem] text-yellow-400/60 uppercase">{tip.cat}</span>
-              <p className="text-[0.55rem] text-white/70 leading-relaxed">{tip.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // ────────────────────────────────────────────────────────────────────────────
 // Main Settings Panel
 // ────────────────────────────────────────────────────────────────────────────
@@ -2132,8 +1970,6 @@ export function SettingsPanel({ className, initialTab, hideTabNav }: { className
       case 'performance': return <PerformanceTab />;
       case 'challenges': return <ChallengesTab />;
       case 'shortcuts2': return <Shortcuts2Tab />;
-      case 'tips': return <TipsTab />;
-      case 'social': return <SocialTab />;
       case 'presets': return <PresetsManager />;
       case 'recordings': return <RecordingsManager />;
       case 'achievements': return <AchievementsTab />;
