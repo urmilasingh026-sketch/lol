@@ -850,49 +850,70 @@ function MobileSettingsSheet({ isOpen, onClose }: { isOpen: boolean; onClose: ()
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-md" onClick={onClose} />}
+      {isOpen && (
+        <div className="fixed inset-0 z-40 bg-black/75 backdrop-blur-lg" onClick={onClose} />
+      )}
       <div className={cn(
         'fixed inset-0 z-50 flex flex-col transition-transform duration-300 ease-out',
         isOpen ? 'translate-y-0' : 'translate-y-full'
       )}
-        style={{ background: 'linear-gradient(180deg, #08081e 0%, #050512 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #07061a 0%, #04030f 100%)' }}
       >
-        {/* ── Header ── */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-white/08 shrink-0"
-          style={{ background: `linear-gradient(135deg, ${activeCatData.color}10 0%, transparent 60%)` }}>
-          <div className="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0"
-            style={{ background: `${activeCatData.color}1e`, boxShadow: `0 0 14px ${activeCatData.color}28` }}>
+        {/* ══ Top accent line (category color) ══ */}
+        <div className="h-0.5 shrink-0 transition-all duration-300"
+          style={{ background: `linear-gradient(90deg, transparent 0%, ${activeCatData.color} 40%, ${activeCatData.color} 60%, transparent 100%)` }} />
+
+        {/* ══ Header ══ */}
+        <div className="flex items-center gap-3 px-4 h-14 shrink-0 relative"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          {/* Colored bg wash */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: `linear-gradient(135deg, ${activeCatData.color}12 0%, transparent 55%)` }} />
+
+          {/* Category icon */}
+          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 relative"
+            style={{
+              background: `${activeCatData.color}22`,
+              border: `1px solid ${activeCatData.color}40`,
+              boxShadow: `0 0 18px ${activeCatData.color}25`,
+            }}>
             <activeCatData.icon className="w-5 h-5" style={{ color: activeCatData.color }} />
           </div>
-          <div className="flex-1">
-            <p className="text-sm font-bold text-white/85">{activeCatData.label}</p>
-            <p className="text-[0.52rem] text-white/30">UK AURORA Ultra Premium v5</p>
+
+          {/* Title */}
+          <div className="flex-1 min-w-0 relative">
+            <p className="text-[0.9rem] font-bold text-white/90 leading-tight">{activeCatData.label}</p>
+            <p className="text-[0.5rem] font-medium uppercase tracking-widest" style={{ color: `${activeCatData.color}80` }}>Settings</p>
           </div>
+
+          {/* Close */}
           <button onClick={onClose}
-            className="w-9 h-9 rounded-2xl flex items-center justify-center bg-white/06 border border-white/10 text-white/40 hover:text-white transition-all">
-            <X className="w-4 h-4" />
+            className="w-10 h-10 rounded-2xl flex items-center justify-center transition-all shrink-0 relative"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}>
+            <X className="w-4.5 h-4.5 text-white/50" />
           </button>
         </div>
 
-        {/* ── Category grid ── */}
-        <div className="shrink-0 px-3 py-2.5 border-b border-white/07 bg-black/20">
-          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
+        {/* ══ Category tab bar ══ */}
+        <div className="shrink-0 border-b overflow-x-auto scrollbar-hide"
+          style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(0,0,0,0.3)' }}>
+          <div className="flex">
             {SIDEBAR_CATEGORIES.map(cat => {
               const Icon = cat.icon;
               const isActive = activeCat === cat.id;
               return (
                 <button key={cat.id} onClick={() => handleCat(cat.id)}
-                  className={cn('flex flex-col items-center gap-1 px-3 py-2 rounded-2xl border transition-all shrink-0 min-w-[3.5rem]',
-                    isActive ? '' : 'bg-white/04 border-white/07 hover:bg-white/08'
+                  className="flex flex-col items-center justify-center gap-1.5 px-4 py-3 shrink-0 relative transition-all min-w-[4.5rem]"
+                  style={{ minHeight: '3.5rem' }}>
+                  {/* Active indicator line */}
+                  {isActive && (
+                    <div className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full"
+                      style={{ background: cat.color }} />
                   )}
-                  style={isActive ? {
-                    background: `${cat.color}1e`,
-                    borderColor: `${cat.color}45`,
-                    boxShadow: `0 0 0 1px ${cat.color}20`,
-                  } : {}}>
-                  <Icon className="w-5 h-5" style={{ color: isActive ? cat.color : 'rgba(255,255,255,0.35)' }} />
-                  <span className="text-[0.44rem] font-bold uppercase tracking-wide whitespace-nowrap"
-                    style={{ color: isActive ? cat.color : 'rgba(255,255,255,0.3)' }}>
+                  <Icon className="w-5 h-5 transition-all"
+                    style={{ color: isActive ? cat.color : 'rgba(255,255,255,0.3)' }} />
+                  <span className="text-[0.5rem] font-bold uppercase tracking-wide whitespace-nowrap transition-all"
+                    style={{ color: isActive ? cat.color : 'rgba(255,255,255,0.28)' }}>
                     {cat.label}
                   </span>
                 </button>
@@ -901,22 +922,25 @@ function MobileSettingsSheet({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           </div>
         </div>
 
-        {/* ── Sub-tabs ── */}
+        {/* ══ Sub-tabs ══ */}
         {(activeCatData.tabs as readonly string[]).length > 1 && (
-          <div className="shrink-0 px-3 py-2 border-b border-white/06 bg-black/10">
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          <div className="shrink-0 px-3 py-2.5 border-b overflow-x-auto scrollbar-hide"
+            style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.15)' }}>
+            <div className="flex gap-2">
               {(activeCatData.tabs as readonly string[]).map(tab => {
                 const isActive = activeTab === tab;
                 return (
                   <button key={tab} onClick={() => setActiveTab(tab)}
-                    className={cn('px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap border transition-all shrink-0',
-                      isActive ? '' : 'bg-white/04 border-white/08 text-white/40 hover:text-white/65 hover:bg-white/07'
-                    )}
+                    className="px-4 py-2 rounded-xl text-[0.65rem] font-semibold whitespace-nowrap border transition-all shrink-0"
                     style={isActive ? {
-                      background: `${activeCatData.color}20`,
-                      borderColor: `${activeCatData.color}50`,
+                      background: `${activeCatData.color}22`,
+                      borderColor: `${activeCatData.color}55`,
                       color: activeCatData.color,
-                    } : {}}>
+                    } : {
+                      background: 'rgba(255,255,255,0.04)',
+                      borderColor: 'rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.4)',
+                    }}>
                     {tab.replace(/^\w/, c => c.toUpperCase()).replace(/-/g, ' ')
                       .replace('Fx', 'FX').replace('Midi', 'MIDI').replace('Ai', 'AI')}
                   </button>
@@ -926,14 +950,16 @@ function MobileSettingsSheet({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           </div>
         )}
 
-        {/* ── Settings content ── */}
+        {/* ══ Settings content ══ */}
         <div className="flex-1 min-h-0 overflow-y-auto" style={{ touchAction: 'pan-y' }}>
           <SettingsPanel hideTabNav className="h-full" initialTab={activeTab} />
         </div>
 
-        {/* ── Footer ── */}
-        <div className="px-4 py-2.5 border-t border-white/07 bg-black/30 shrink-0">
-          <p className="text-[0.5rem] text-white/20 text-center">All settings auto-saved · UK AURORA v5</p>
+        {/* ══ Footer ══ */}
+        <div className="px-4 py-3 shrink-0 flex items-center justify-between"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(0,0,0,0.3)' }}>
+          <p className="text-[0.48rem] text-white/20 uppercase tracking-widest">Auto-saved</p>
+          <p className="text-[0.48rem] font-bold uppercase tracking-widest" style={{ color: `${activeCatData.color}60` }}>UK Aurora v5</p>
         </div>
       </div>
     </>
