@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, createContext, useContext } from 'react';
-import { useStore, SOUND_CATEGORIES, ALL_APP_THEMES, ALL_BACKGROUND_EFFECTS, MUSICAL_SCALES, ALL_TYPING_MODES_LIST, APP_THEMES } from '@/store';
+import { useStore, SOUND_CATEGORIES, ALL_APP_THEMES, ALL_BACKGROUND_EFFECTS, MUSICAL_SCALES, ALL_RGB_MODES, ALL_TYPING_MODES_LIST, APP_THEMES } from '@/store';
 import { cn } from '@/lib/utils';
 import { PresetsManager } from './PresetsManager';
 import { RecordingsManager } from './RecordingsManager';
@@ -826,6 +826,121 @@ function FxTab() {
   );
 }
 
+// ── RGB mode → gradient swatch lookup ────────────────────────────────────
+const RGB_SWATCH: Record<string, string> = {
+  'wave':           'linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)',
+  'breathing':      'linear-gradient(135deg,#7c3aed,#a855f7)',
+  'static-rainbow': 'linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f)',
+  'starlight':      'radial-gradient(circle,#fff 0%,#4f46e5 100%)',
+  'solid':          'linear-gradient(135deg,#5f6bff,#8b5cf6)',
+  'reactive':       'linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.15) 100%)',
+  'aurora':         'linear-gradient(135deg,#00ff88,#4f46e5)',
+  'thunder':        'linear-gradient(135deg,#fbbf24,#1e3a5f)',
+  'candy':          'linear-gradient(90deg,#ffd6e7,#c8e6c9,#bbe1fa)',
+  'plasma':         'linear-gradient(135deg,#f0f,#0ff)',
+  'fire':           'linear-gradient(180deg,#ff0 0%,#f80 45%,#f00 100%)',
+  'ice':            'linear-gradient(135deg,#e0f7ff,#4dd0e1)',
+  'disco':          'linear-gradient(90deg,#f00,#0f0,#00f,#ff0,#f0f)',
+  'sunset':         'linear-gradient(135deg,#f97316,#7c3aed)',
+  'neon-pulse':     'linear-gradient(135deg,#00f5ff,#bf00ff)',
+  'lava':           'linear-gradient(135deg,#ff4500,#8b0000)',
+  'galaxy':         'linear-gradient(135deg,#1a1a2e,#4f46e5,#9333ea)',
+  'typhoon':        'linear-gradient(135deg,#06b6d4,#e0f2fe)',
+  'forest':         'linear-gradient(135deg,#166534,#4ade80)',
+  'ocean':          'linear-gradient(135deg,#1d4ed8,#06b6d4)',
+  'sakura':         'linear-gradient(135deg,#fbcfe8,#f9a8d4)',
+  'desert':         'linear-gradient(135deg,#d97706,#fef3c7)',
+  'toxic':          'linear-gradient(135deg,#4ade80,#84cc16)',
+  'blood':          'linear-gradient(135deg,#7f1d1d,#dc2626)',
+  'void':           'linear-gradient(135deg,#1e1b4b,#4c1d95)',
+  'neon-green':     'linear-gradient(135deg,#84cc16,#4ade80)',
+  'cyber-pink':     'linear-gradient(135deg,#ec4899,#be185d)',
+  'matrix-rgb':     'linear-gradient(180deg,#004d00,#00ff41)',
+  'copper':         'linear-gradient(135deg,#b45309,#d97706)',
+  'emerald-rgb':    'linear-gradient(135deg,#059669,#34d399)',
+  'sapphire':       'linear-gradient(135deg,#1d4ed8,#60a5fa)',
+  'ruby':           'linear-gradient(135deg,#9f1239,#f43f5e)',
+  'earth-tones':    'linear-gradient(135deg,#78350f,#a16207)',
+  'storm':          'linear-gradient(135deg,#475569,#94a3b8)',
+  'coral-rgb':      'linear-gradient(135deg,#f97316,#fb7185)',
+  'teal-rgb':       'linear-gradient(135deg,#0d9488,#5eead4)',
+  'magenta-rgb':    'linear-gradient(135deg,#7e22ce,#ec4899)',
+  'hologram':       'linear-gradient(90deg,#f0f,#0ff,#ff0)',
+  'venom':          'linear-gradient(135deg,#166534,#84cc16)',
+  'inferno':        'linear-gradient(180deg,#f97316,#dc2626)',
+  'chrome':         'linear-gradient(135deg,#94a3b8,#e2e8f0)',
+  'peacock':        'linear-gradient(135deg,#0e7490,#065f46)',
+  'jade':           'linear-gradient(135deg,#14532d,#4ade80)',
+  'amethyst-rgb':   'linear-gradient(135deg,#7c3aed,#c4b5fd)',
+  'violet-rgb':     'linear-gradient(135deg,#4f46e5,#818cf8)',
+  'indigo-rgb':     'linear-gradient(135deg,#312e81,#6366f1)',
+  'amber':          'linear-gradient(135deg,#b45309,#fbbf24)',
+  'citrus':         'linear-gradient(135deg,#84cc16,#fbbf24)',
+  'berry':          'linear-gradient(135deg,#7c3aed,#be185d)',
+  'peach-rgb':      'linear-gradient(135deg,#fed7aa,#fb923c)',
+  'lilac':          'linear-gradient(135deg,#d8b4fe,#c4b5fd)',
+  'sage':           'linear-gradient(135deg,#4d7c0f,#86efac)',
+  'crimson':        'linear-gradient(135deg,#7f1d1d,#f43f5e)',
+  'cobalt':         'linear-gradient(135deg,#1d4ed8,#3b82f6)',
+  'turquoise-rgb':  'linear-gradient(135deg,#0891b2,#5eead4)',
+  'navy':           'linear-gradient(135deg,#1e3a5f,#1d4ed8)',
+  'orchid':         'linear-gradient(135deg,#9333ea,#db2777)',
+  'sienna':         'linear-gradient(135deg,#92400e,#c2410c)',
+  'lime-rgb':       'linear-gradient(135deg,#4d7c0f,#a3e635)',
+  'electric-blue':  'linear-gradient(135deg,#1d4ed8,#0ea5e9)',
+  'hot-pink':       'linear-gradient(135deg,#db2777,#f9a8d4)',
+  'sea-green':      'linear-gradient(135deg,#065f46,#34d399)',
+  'sky-blue':       'linear-gradient(135deg,#0284c7,#7dd3fc)',
+  'blush':          'linear-gradient(135deg,#fda4af,#fb7185)',
+  'champagne':      'linear-gradient(135deg,#d97706,#fef9c3)',
+  'silver-rgb':     'linear-gradient(135deg,#94a3b8,#f1f5f9)',
+  'bronze':         'linear-gradient(135deg,#92400e,#d97706)',
+  'opal':           'linear-gradient(90deg,#c4b5fd,#7dd3fc,#f9a8d4)',
+  'pearl':          'linear-gradient(135deg,#f8fafc,#e2e8f0)',
+  'malachite':      'linear-gradient(135deg,#14532d,#22c55e)',
+  'lapis':          'linear-gradient(135deg,#1e40af,#c2a634)',
+  'aquamarine':     'linear-gradient(135deg,#0891b2,#6ee7b7)',
+  'carnival':       'linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e,#3b82f6)',
+  'retro-rgb':      'linear-gradient(135deg,#d97706,#dc2626)',
+  'bubblegum-rgb':  'linear-gradient(135deg,#f472b6,#e9d5ff)',
+  'cotton':         'linear-gradient(90deg,#fbcfe8,#bfdbfe)',
+  'mint-ice':       'linear-gradient(135deg,#a7f3d0,#7dd3fc)',
+  'lavender-rgb':   'linear-gradient(135deg,#c4b5fd,#ddd6fe)',
+  'electric-purple':'linear-gradient(135deg,#7c3aed,#9333ea)',
+  'golden-hour':    'linear-gradient(135deg,#d97706,#fb923c)',
+  'midnight-blue':  'linear-gradient(135deg,#1e3a5f,#312e81)',
+  'northern-lights':'linear-gradient(135deg,#4ade80,#818cf8)',
+  'deep-ocean':     'linear-gradient(135deg,#0c4a6e,#1d4ed8)',
+  'sunrise-rgb':    'linear-gradient(135deg,#fb923c,#fbbf24)',
+  'dusk-rgb':       'linear-gradient(135deg,#7c3aed,#f97316)',
+  'moonlight':      'linear-gradient(135deg,#94a3b8,#e2e8f0)',
+  'tropical':       'linear-gradient(135deg,#16a34a,#f97316)',
+  'cyber-red':      'linear-gradient(135deg,#450a0a,#ef4444)',
+  'toxic-waste':    'linear-gradient(135deg,#4d7c0f,#fbbf24)',
+  'lava-flow':      'linear-gradient(135deg,#7c2d12,#f97316)',
+  'black-ice':      'linear-gradient(135deg,#0f172a,#0284c7)',
+  'solar-flare':    'linear-gradient(135deg,#fbbf24,#dc2626)',
+  'cosmic-ray':     'linear-gradient(135deg,#4f46e5,#c026d3)',
+  'acid-rain':      'linear-gradient(135deg,#84cc16,#4ade80)',
+  'oil-slick':      'linear-gradient(90deg,#7c3aed,#0ea5e9,#10b981)',
+  'prism-rgb':      'linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e,#3b82f6,#7c3aed)',
+  'waterfall':      'linear-gradient(180deg,#0ea5e9,#bae6fd)',
+  'autumn-leaves':  'linear-gradient(135deg,#92400e,#dc2626)',
+  'spring-bloom':   'linear-gradient(135deg,#86efac,#fbcfe8)',
+  'bamboo-rgb':     'linear-gradient(135deg,#166534,#4ade80)',
+};
+
+const RGB_CATS = [
+  { id: 'all',    label: 'All',    icon: '✦' },
+  { id: 'classic',label: 'Classic',icon: '🌊', ids: new Set(['wave','breathing','static-rainbow','starlight','solid','reactive','aurora','disco','candy','plasma','thunder']) },
+  { id: 'fire',   label: 'Fire',   icon: '🔥', ids: new Set(['fire','lava','inferno','venom','cyber-red','toxic-waste','lava-flow','solar-flare','blood','crimson','ruby','inferno','coral-rgb','tropical','desert','amber','golden-hour','sunrise-rgb','retro-rgb','copper','bronze','sienna','earth-tones']) },
+  { id: 'cool',   label: 'Cool',   icon: '❄️', ids: new Set(['ice','typhoon','ocean','teal-rgb','cobalt','electric-blue','sapphire','sky-blue','navy','aquamarine','mint-ice','black-ice','deep-ocean','moonlight','storm','sea-green','waterfall','arctic']) },
+  { id: 'nature', label: 'Nature', icon: '🌿', ids: new Set(['forest','sakura','ocean','desert','toxic','sage','bamboo-rgb','autumn-leaves','spring-bloom','malachite','jade','peacock','citrus','lime-rgb','sea-green','tropical','venom','acid-rain']) },
+  { id: 'gems',   label: 'Gems',   icon: '💎', ids: new Set(['emerald-rgb','sapphire','ruby','amethyst-rgb','violet-rgb','indigo-rgb','turquoise-rgb','orchid','opal','pearl','lapis','aquamarine','hologram','chrome','silver-rgb','champagne','amber']) },
+  { id: 'neon',   label: 'Neon',   icon: '💜', ids: new Set(['neon-pulse','neon-green','cyber-pink','matrix-rgb','hologram','electric-purple','electric-blue','magenta-rgb','cosmic-ray','oil-slick','prism-rgb','carnival','galaxy','void','northern-lights','midnight-blue']) },
+  { id: 'pastel', label: 'Pastel', icon: '🌸', ids: new Set(['candy','sakura','blush','peach-rgb','lilac','lavender-rgb','cotton','bubblegum-rgb','hot-pink','mint-ice','moonlight','silver-rgb','pearl']) },
+];
+
 const BG_CATS = [
   { id: 'all',     label: 'All',     icon: '✦' },
   { id: 'digital', label: 'Digital', icon: '💻', ids: new Set(['matrix-rain','binary-rain','purple-rain','red-rain','cyber','circuit-traces','scan-lines','vhs-noise','crt-glow','glitch-bars','hologram-scan','hex-overlay','laser-grid','dot-wave','dna-helix']) },
@@ -835,6 +950,109 @@ const BG_CATS = [
   { id: 'party',   label: 'Party',   icon: '🎉', ids: new Set(['confetti','fireworks','disco-floor','hearts','music-notes','glitter','diamonds','neon-orbs','soap-bubbles-xl','bubbles','fire-sparks','stars-drift','dust-motes']) },
   { id: 'glow',    label: 'Glow',    icon: '✨', ids: new Set(['particles','plasma-wave','neon-pulse','lava-glow','inferno','toxic-glow','neon-flicker','radar-sweep','energy-field','electric-arcs','magma-flow','void-ripple','spectral','color-wash','prism-rays','oil-slick','gradient-shift','spotlight','vortex','rainbow-wave','retro-glow','chromatic-shift','sunset-gradient','dream-haze','plasma-glow','crystal-lattice','stained-glass','mosaic-shift','heatwave','heat-haze']) },
 ];
+
+function RgbModePicker() {
+  const s = useStore();
+  const [cat, setCat] = useState('all');
+  const [search, setSearch] = useState('');
+
+  const filtered = ALL_RGB_MODES.filter(m => {
+    const inCat = cat === 'all' || (RGB_CATS.find(c => c.id === cat) as any)?.ids?.has(m.id);
+    const inSearch = !search || m.label.toLowerCase().includes(search.toLowerCase());
+    return inCat && inSearch;
+  });
+
+  const activeMode = ALL_RGB_MODES.find(m => m.id === s.rgbMode);
+
+  return (
+    <div className="space-y-3">
+      {/* Enable toggles row */}
+      <div className="grid grid-cols-2 gap-2">
+        <Toggle label="RGB Lighting" desc="Key color animations" checked={s.rgbEnabled} onChange={() => s.setRgbEnabled(!s.rgbEnabled)} />
+        <Toggle label="Rainbow Mode" desc="Full rainbow on keys" checked={s.rainbowModeEnabled} onChange={() => s.setRainbowEnabled(!s.rainbowModeEnabled)} />
+      </div>
+
+      {s.rgbEnabled && (
+        <>
+          {/* Active mode banner */}
+          {activeMode && (
+            <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border border-white/10 overflow-hidden relative">
+              <div className="absolute inset-0 opacity-20" style={{ background: RGB_SWATCH[activeMode.id] || 'linear-gradient(135deg,#7c3aed,#a855f7)' }} />
+              <span className="text-lg relative z-10">{activeMode.icon}</span>
+              <div className="relative z-10 flex-1 min-w-0">
+                <p className="text-xs font-bold text-white">{activeMode.label}</p>
+                <p className="text-[0.5rem] text-white/50 truncate">{activeMode.desc}</p>
+              </div>
+              <div className="relative z-10 w-10 h-6 rounded-lg shrink-0 ring-1 ring-white/20 overflow-hidden">
+                <div className="w-full h-full" style={{ background: RGB_SWATCH[activeMode.id] || 'linear-gradient(135deg,#7c3aed,#a855f7)' }} />
+              </div>
+            </div>
+          )}
+
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search RGB modes…"
+              className="w-full pl-7 pr-3 py-2 rounded-xl bg-white/06 border border-white/10 text-xs text-white/80 placeholder:text-white/25 focus:outline-none focus:border-violet-500/40" />
+          </div>
+
+          {/* Category pills */}
+          <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-0.5">
+            {RGB_CATS.map(c => (
+              <button key={c.id} onClick={() => setCat(c.id)}
+                className={cn('flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[0.6rem] font-semibold whitespace-nowrap border shrink-0 transition-all',
+                  cat === c.id ? 'bg-violet-500/25 border-violet-500/45 text-violet-200' : 'bg-white/04 border-white/08 text-white/40 hover:text-white/65 hover:bg-white/07')}>
+                <span>{c.icon}</span> {c.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Mode grid with color swatches */}
+          <div className="grid grid-cols-2 gap-1.5 max-h-64 overflow-y-auto pr-0.5" style={{ touchAction: 'pan-y' }}>
+            {filtered.map(m => {
+              const isActive = s.rgbMode === m.id;
+              const swatch = RGB_SWATCH[m.id] || 'linear-gradient(135deg,#7c3aed,#a855f7)';
+              return (
+                <button key={m.id} onClick={() => s.setRgbMode(m.id as any)}
+                  className={cn('flex items-center gap-2 px-2 py-2 rounded-xl border text-left transition-all group overflow-hidden relative',
+                    isActive ? 'border-violet-400/50 bg-violet-500/10' : 'border-white/07 bg-white/03 hover:border-white/16 hover:bg-white/06'
+                  )}
+                  style={isActive ? { boxShadow: '0 0 12px rgba(139,92,246,0.3)' } : {}}>
+                  {/* Swatch bar on left */}
+                  <div className="w-4 h-9 rounded-lg shrink-0 overflow-hidden">
+                    <div className="w-full h-full" style={{ background: swatch }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={cn('text-[0.65rem] font-semibold truncate leading-tight', isActive ? 'text-violet-200' : 'text-white/70')}>{m.label}</p>
+                    <p className="text-[0.48rem] text-white/30 truncate leading-tight mt-0.5">{m.icon} {m.desc}</p>
+                  </div>
+                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
+          {filtered.length === 0 && (
+            <p className="text-center text-xs text-white/25 py-4">No modes found</p>
+          )}
+
+          {/* Custom color for solid */}
+          {s.rgbMode === 'solid' && (
+            <div className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-white/04 border border-white/08">
+              <span className="text-xs text-white/60">Custom Color</span>
+              <input type="color" value={s.rgbCustomColor} onChange={e => s.setRgbCustomColor(e.target.value)}
+                className="w-10 h-7 rounded-lg cursor-pointer border-0 bg-transparent" />
+            </div>
+          )}
+
+          {/* Sliders */}
+          <Slider label="Brightness" value={s.rgbBrightness} min={0} max={100} step={5} display={`${s.rgbBrightness}%`} onChange={s.setRgbBrightness} />
+          <Slider label="Saturation" value={s.rgbSaturation} min={0} max={100} step={5} display={`${s.rgbSaturation}%`} onChange={s.setRgbSaturation} />
+          <Slider label="Speed" value={s.rgbAnimSpeed} min={0.1} max={5} step={0.1} display={`${s.rgbAnimSpeed.toFixed(1)}×`} onChange={s.setRgbAnimSpeed} />
+        </>
+      )}
+    </div>
+  );
+}
 
 function BgModePicker() {
   const s = useStore();
@@ -923,22 +1141,23 @@ function BgModePicker() {
 function VisualTab() {
   const s = useStore();
   const [themeSearch, setThemeSearch] = useState('');
-  const [section, setSection] = useState<'theme'|'bg'|'glow'>('theme');
+  const [section, setSection] = useState<'theme'|'rgb'|'bg'|'glow'>('theme');
 
   const filteredThemes = themeSearch
     ? ALL_APP_THEMES.filter(t => t.label.toLowerCase().includes(themeSearch.toLowerCase()) || (t as any).desc?.toLowerCase().includes(themeSearch.toLowerCase()))
     : ALL_APP_THEMES;
 
   const sections = [
-    { id: 'theme', label: 'Theme',      icon: '🎨' },
+    { id: 'theme', label: 'Theme', icon: '🎨' },
+    { id: 'rgb',   label: 'RGB',   icon: '💡' },
     { id: 'bg',    label: 'Background', icon: '🌌' },
-    { id: 'glow',  label: 'Glow',       icon: '✨' },
+    { id: 'glow',  label: 'Glow',  icon: '✨' },
   ] as const;
 
   return (
     <div className="space-y-3">
       {/* Section switcher */}
-      <div className="grid grid-cols-3 gap-1 p-1 rounded-2xl bg-white/04 border border-white/08">
+      <div className="grid grid-cols-4 gap-1 p-1 rounded-2xl bg-white/04 border border-white/08">
         {sections.map(sec => (
           <button key={sec.id} onClick={() => setSection(sec.id)}
             className={cn('flex flex-col items-center gap-0.5 py-2 rounded-xl text-center transition-all',
@@ -993,6 +1212,9 @@ function VisualTab() {
             onChange={v => s.setGradientStyle(v as any)} wrap />
         </>
       )}
+
+      {/* RGB section */}
+      {section === 'rgb' && <RgbModePicker />}
 
       {/* Background section */}
       {section === 'bg' && <BgModePicker />}

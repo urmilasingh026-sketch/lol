@@ -133,23 +133,6 @@ export const RGB_MODES_EXTRA = [
   { id: 'strobe-fast',       label: 'Strobe Fast',       desc: 'Fast 4Hz strobe',              icon: '⚡' },
   { id: 'strobe-random',     label: 'Strobe Random',     desc: 'Random timing strobe',         icon: '🎲' },
   { id: 'strobe-party',      label: 'Strobe Party',      desc: 'Party light strobe',           icon: '🎉' },
-  // ── Chase Variants ────────────────────────────────────────────────────
-  { id: 'chase-left',        label: 'Chase Left',        desc: 'Single pixel chases left',     icon: '⬅️' },
-  { id: 'chase-right',       label: 'Chase Right',       desc: 'Single pixel chases right',    icon: '➡️' },
-  { id: 'chase-rainbow',     label: 'Chase Rainbow',     desc: 'Rainbow pixel chasing',        icon: '🌈' },
-  { id: 'chase-white',       label: 'Chase White',       desc: 'White pixel chasing',          icon: '⚪' },
-  { id: 'chase-fire',        label: 'Chase Fire',        desc: 'Fire pixel chasing',           icon: '🔥' },
-  { id: 'chase-fast',        label: 'Chase Fast',        desc: 'Fast chasing pixel',           icon: '⚡' },
-  { id: 'chase-slow',        label: 'Chase Slow',        desc: 'Slow creeping pixel',          icon: '🐌' },
-  { id: 'chase-double',      label: 'Chase Double',      desc: 'Two pixels chasing',           icon: '👫' },
-  // ── Cascade Variants ──────────────────────────────────────────────────
-  { id: 'cascade-down',      label: 'Cascade Down',      desc: 'Colors cascade downward',      icon: '⬇️' },
-  { id: 'cascade-up',        label: 'Cascade Up',        desc: 'Colors cascade upward',        icon: '⬆️' },
-  { id: 'cascade-rainbow',   label: 'Cascade Rainbow',   desc: 'Rainbow falling cascade',      icon: '🌈' },
-  { id: 'cascade-white',     label: 'Cascade White',     desc: 'White waterfall cascade',      icon: '⚪' },
-  { id: 'cascade-random',    label: 'Cascade Random',    desc: 'Random key cascade',           icon: '🎲' },
-  { id: 'cascade-diagonal',  label: 'Cascade Diagonal',  desc: 'Diagonal sweep cascade',       icon: '↗️' },
-  { id: 'cascade-reverse',   label: 'Cascade Reverse',   desc: 'Reverse cascade sweep',        icon: '⬆️' },
   // ── Ripple Variants ───────────────────────────────────────────────────
   { id: 'ripple-center',     label: 'Ripple Center',     desc: 'Expands from center key',      icon: '💧' },
   { id: 'ripple-touch',      label: 'Ripple Touch',      desc: 'Ripples from pressed key',     icon: '💧' },
