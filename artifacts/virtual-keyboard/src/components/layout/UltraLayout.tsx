@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useStore, APP_THEMES } from '@/store';
+import { useShallow } from 'zustand/react/shallow';
 import { cn } from '@/lib/utils';
 import { MOTIVATIONAL_QUOTES } from '@/lib/content';
 import { Keyboard } from '@/components/keyboard/Keyboard';

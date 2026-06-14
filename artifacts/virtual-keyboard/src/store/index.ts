@@ -764,9 +764,13 @@ export const BACKGROUND_EFFECTS = [
 ] as const;
 
 // ── Combined 500+ arrays (base + extra data) ─────────────────────────────
-export const ALL_APP_THEMES = [...APP_THEMES, ...THEMES_EXTRA];
-export const ALL_RGB_MODES = [...RGB_MODES, ...RGB_MODES_EXTRA];
-export const ALL_BACKGROUND_EFFECTS = [...BACKGROUND_EFFECTS, ...BACKGROUNDS_EXTRA];
+const _dedup = <T extends { id: string }>(arr: T[]): T[] => {
+  const seen = new Set<string>();
+  return arr.filter(item => { if (seen.has(item.id)) return false; seen.add(item.id); return true; });
+};
+export const ALL_APP_THEMES = _dedup([...APP_THEMES, ...THEMES_EXTRA]);
+export const ALL_RGB_MODES = _dedup([...RGB_MODES, ...RGB_MODES_EXTRA]);
+export const ALL_BACKGROUND_EFFECTS = _dedup([...BACKGROUND_EFFECTS, ...BACKGROUNDS_EXTRA]);
 export const ALL_TYPING_MODES_LIST = [
   'free','lesson','word','sentence','paragraph','numbers','custom','timed',
   'quotes','code','poetry','tongue-twisters','movies','programming','science','fun-facts',
