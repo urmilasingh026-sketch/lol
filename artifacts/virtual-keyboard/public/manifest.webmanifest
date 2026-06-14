@@ -1,0 +1,41 @@
+{
+  "name": "UK Aurora Virtual Keyboard",
+  "short_name": "UK Aurora",
+  "description": "23+ professional instruments, RGB lighting, typing practice, recording & playback. Play music on any device.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#09090f",
+  "theme_color": "#09090f",
+  "lang": "en",
+  "categories": ["music", "entertainment", "education", "utilities"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "uk-aurora-logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "uk-aurora-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

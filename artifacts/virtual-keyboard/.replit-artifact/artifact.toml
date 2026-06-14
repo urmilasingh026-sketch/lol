@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "UK Aurora Virtual Keyboard"
+version = "1.0.0"
+id = "artifacts/virtual-keyboard"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23537
+
+[services.development]
+run = "pnpm --filter @workspace/virtual-keyboard run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/virtual-keyboard", "run", "build" ]
+publicDir = "artifacts/virtual-keyboard/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23537"
+BASE_PATH = "/"
