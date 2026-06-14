@@ -283,14 +283,8 @@ const QUICK_MODES_CTRL = [
 
 function ControlsTab() {
   const s = useStore();
-  const [showTheme, setShowTheme] = useState(false);
-  const [showBpm, setShowBpm] = useState(false);
-  const [showGoal, setShowGoal] = useState(false);
   const [themeFilter, setThemeFilter] = useState<'all' | 'dark' | 'neon' | 'nature' | 'gems'>('all');
-  const [customGoal, setCustomGoal] = useState('');
   const themeRef = useRef<HTMLDivElement>(null);
-  const bpmRef = useRef<HTMLDivElement>(null);
-  const goalRef = useRef<HTMLDivElement>(null);
 
   const filteredThemes = themeFilter === 'all' ? APP_THEMES : (() => {
     const neonIds = ['neon','cyberpunk','matrix','synthwave','vaporwave','retrowave','glitch','arcade','terminal','crt','blade-runner','ghost-shell','hackers','cyberpunk-2077','neon-tokyo'];
@@ -303,9 +297,7 @@ function ControlsTab() {
 
   useEffect(() => {
     const fn = (e: MouseEvent) => {
-      if (themeRef.current && !themeRef.current.contains(e.target as Node)) setShowTheme(false);
-      if (bpmRef.current && !bpmRef.current.contains(e.target as Node)) setShowBpm(false);
-      if (goalRef.current && !goalRef.current.contains(e.target as Node)) setShowGoal(false);
+      if (themeRef.current && !themeRef.current.contains(e.target as Node)) return;
     };
     document.addEventListener('mousedown', fn);
     return () => document.removeEventListener('mousedown', fn);
@@ -456,65 +448,6 @@ function ControlsTab() {
         </div>
       </div>
 
-      {/* ── WPM Goal ── */}
-      <SectionLabel>WPM Goal</SectionLabel>
-      <div className="px-2.5 py-2 rounded-xl bg-white/02 border border-white/05 space-y-2">
-        {s.dailyGoalWpm > 0 && (
-          <div className="space-y-1">
-            <div className="flex justify-between">
-              <span className="text-[0.52rem] text-white/40">Progress</span>
-              <span className="text-[0.52rem] font-bold" style={{ color: s.wpm >= s.dailyGoalWpm ? '#4ade80' : '#a78bfa' }}>{s.wpm}/{s.dailyGoalWpm} WPM</span>
-            </div>
-            <div className="w-full h-1.5 rounded-full bg-white/08 overflow-hidden">
-              <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(100, (s.wpm / s.dailyGoalWpm) * 100)}%`, background: s.wpm >= s.dailyGoalWpm ? '#4ade80' : '#8b5cf6' }} />
-            </div>
-            {s.wpm >= s.dailyGoalWpm && <p className="text-[0.5rem] text-emerald-400">🎉 Goal reached!</p>}
-            <button onClick={() => s.setDailyGoalWpm(0)} className="text-[0.48rem] text-white/30 hover:text-red-400 transition-all">Clear goal</button>
-          </div>
-        )}
-        <div className="flex gap-1 flex-wrap">
-          {[30, 50, 70, 80, 100, 120].map(v => (
-            <button key={v} onClick={() => s.setDailyGoalWpm(v)}
-              className={cn('flex-1 min-w-[2.5rem] py-1 rounded-lg text-[0.5rem] border transition-all',
-                s.dailyGoalWpm === v ? 'bg-violet-500/25 border-violet-500/50 text-violet-200' : 'bg-white/05 border-white/08 text-white/40 hover:text-white/70')}>
-              {v}
-            </button>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <input type="number" min={1} max={300} placeholder="Custom WPM" value={customGoal}
-            onChange={e => setCustomGoal(e.target.value)}
-            className="flex-1 px-2 py-1 rounded-lg bg-white/06 border border-white/10 text-white/60 text-[0.52rem] outline-none focus:border-violet-500/40" />
-          <button onClick={() => { const v = parseInt(customGoal); if (v > 0) { s.setDailyGoalWpm(v); setCustomGoal(''); } }}
-            className="px-3 py-1 rounded-lg bg-violet-500/20 border border-violet-500/40 text-violet-300 text-[0.52rem] hover:bg-violet-500/30 transition-all">
-            Set
-          </button>
-        </div>
-      </div>
-
-      {/* ── Quick Toggles ── */}
-      <SectionLabel>Quick Toggles</SectionLabel>
-      <div className="space-y-1">
-        <Toggle label="Focus Mode" desc="Hide distractions while typing" checked={s.focusMode} onChange={() => s.setFocusMode(!s.focusMode)} />
-        <Toggle label="Ghost Mode" desc="No corrections allowed" checked={s.ghostMode} onChange={() => s.setGhostMode(!s.ghostMode)} />
-        <Toggle label="Performance Mode" desc="Reduce effects for speed" checked={s.performanceMode} onChange={() => s.setPerformanceMode(!s.performanceMode)} />
-        <Toggle label="Blind Typing" desc="Hide keys while typing" checked={s.blindTypingMode} onChange={() => s.setBlindTypingMode(!s.blindTypingMode)} />
-        <Toggle label="Daily Challenge" desc="Special challenge mode" checked={s.dailyChallengeMode} onChange={() => s.setDailyChallengeMode(!s.dailyChallengeMode)} />
-        <Toggle label="Pomodoro Timer" desc="Focus intervals" checked={s.pomodoroEnabled} onChange={() => s.setPomodoroEnabled(!s.pomodoroEnabled)} />
-      </div>
-
-      {/* ── Actions ── */}
-      <SectionLabel>Actions</SectionLabel>
-      <div className="flex flex-wrap gap-2">
-        <button onClick={s.resetTyping}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/05 border border-white/10 text-white/55 hover:text-white hover:border-white/25 text-[0.58rem] font-medium transition-all">
-          <RotateCcw className="w-3 h-3" /> Reset Session
-        </button>
-        <button onClick={s.exportSettings}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/05 border border-white/10 text-white/55 hover:text-white hover:border-white/25 text-[0.58rem] font-medium transition-all">
-          <Download className="w-3 h-3" /> Export Settings
-        </button>
-      </div>
 
     </div>
   );
@@ -667,12 +600,6 @@ function TypingTab() {
       <Slider label="Break Reminder" value={s.breakReminderInterval} min={0} max={60} step={5}
         display={s.breakReminderInterval === 0 ? 'Off' : `${s.breakReminderInterval}m`} onChange={s.setBreakReminderInterval} />
 
-      <div className="pt-2">
-        <button onClick={s.resetTyping}
-          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl bg-white/05 border border-white/08 text-[0.62rem] text-white/50 hover:text-white/80 hover:border-white/18 transition-all">
-          <RotateCcw className="w-3 h-3" /> Reset Current Session
-        </button>
-      </div>
     </div>
   );
 }
@@ -762,12 +689,6 @@ function AudioTab() {
       <Toggle label="Error Sound" checked={s.errorSoundEnabled} onChange={() => s.setErrorSoundEnabled(!s.errorSoundEnabled)} />
       <Toggle label="Success Sound" checked={s.successSoundEnabled} onChange={() => s.setSuccessSoundEnabled(!s.successSoundEnabled)} />
 
-      <SectionLabel>FX Toggles</SectionLabel>
-      <Toggle label="Reverb" checked={s.reverbEnabled} onChange={() => s.setEffect('reverb', !s.reverbEnabled)} />
-      <Toggle label="Delay / Echo" checked={s.delayEnabled} onChange={() => s.setEffect('delay', !s.delayEnabled)} />
-      <Toggle label="Chorus" checked={s.chorusEnabled} onChange={() => s.setEffect('chorus', !s.chorusEnabled)} />
-      <Toggle label="Distortion" checked={s.distortionEnabled} onChange={() => s.setEffect('distortion', !s.distortionEnabled)} />
-      <Toggle label="Compression" checked={s.compressionEnabled} onChange={() => s.setEffect('compression', !s.compressionEnabled)} />
     </div>
   );
 }
@@ -776,6 +697,15 @@ function FxTab() {
   const s = useStore();
   return (
     <div className="space-y-3">
+      <SectionLabel>FX Enable</SectionLabel>
+      <div className="grid grid-cols-2 gap-1">
+        <Toggle label="Reverb" checked={s.reverbEnabled} onChange={() => s.setEffect('reverb', !s.reverbEnabled)} />
+        <Toggle label="Delay" checked={s.delayEnabled} onChange={() => s.setEffect('delay', !s.delayEnabled)} />
+        <Toggle label="Chorus" checked={s.chorusEnabled} onChange={() => s.setEffect('chorus', !s.chorusEnabled)} />
+        <Toggle label="Distortion" checked={s.distortionEnabled} onChange={() => s.setEffect('distortion', !s.distortionEnabled)} />
+        <Toggle label="Compression" checked={s.compressionEnabled} onChange={() => s.setEffect('compression', !s.compressionEnabled)} />
+      </div>
+
       <SectionLabel>3-Band EQ</SectionLabel>
       <Slider label="Bass" value={s.eqBass} min={-12} max={12} step={0.5}
         display={`${s.eqBass > 0 ? '+' : ''}${s.eqBass.toFixed(1)} dB`} onChange={s.setEqBass} />
@@ -1427,7 +1357,6 @@ function InterfaceTab() {
       )}
 
       <SectionLabel>UI Layout</SectionLabel>
-      <Toggle label="Focus Mode" desc="Hide UI chrome for distraction-free typing" checked={s.focusMode} onChange={() => s.setFocusMode(!s.focusMode)} />
       <Toggle label="Top Bar Visible" checked={s.topBarVisible} onChange={() => s.setTopBarVisible(!s.topBarVisible)} />
       <Toggle label="Transport Dock Visible" checked={s.transportDockVisible} onChange={() => s.setTransportDockVisible(!s.transportDockVisible)} />
       <Slider label="Focus Mode Opacity" value={s.focusModeOpacity} min={0} max={1} step={0.05}
