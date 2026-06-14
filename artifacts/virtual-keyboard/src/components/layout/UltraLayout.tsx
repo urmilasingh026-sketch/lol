@@ -326,7 +326,7 @@ const SIDEBAR_CATEGORIES = [
   },
   {
     id: 'music', label: 'Music', icon: Music, color: '#fb7185',
-    tabs: ['musical', 'harmony', 'synth', 'mixer', 'midi', 'looper'],
+    tabs: ['musical'],
   },
   {
     id: 'interface', label: 'Interface', icon: Eye, color: '#2dd4bf',
@@ -435,30 +435,6 @@ function NexusSidebar({ open, activeTab, onTabChange, onClose }: {
               <X className="w-4 h-4" />
             </button>
           </div>
-          {/* Sub-tab pills — only when multiple tabs */}
-          {(activeCatData.tabs as readonly string[]).length > 1 && (
-            <div className="flex gap-1.5 mt-2.5 overflow-x-auto scrollbar-hide pb-0.5">
-              {(activeCatData.tabs as readonly string[]).map(tab => {
-                const isActive = activeTab === tab;
-                return (
-                  <button key={tab} onClick={() => onTabChange(tab)}
-                    className={cn('px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap border transition-all shrink-0',
-                      isActive
-                        ? ''
-                        : 'bg-white/04 border-white/08 text-white/35 hover:text-white/65 hover:bg-white/07 hover:border-white/18'
-                    )}
-                    style={isActive ? {
-                      background: `${activeCatData.color}20`,
-                      borderColor: `${activeCatData.color}50`,
-                      color: activeCatData.color,
-                    } : {}}>
-                    {tab.replace(/^\w/, c => c.toUpperCase()).replace(/-/g, ' ')
-                      .replace('Fx', 'FX').replace('Midi', 'MIDI').replace('Ai', 'AI')}
-                  </button>
-                );
-              })}
-            </div>
-          )}
         </div>
 
         {/* Settings content */}
