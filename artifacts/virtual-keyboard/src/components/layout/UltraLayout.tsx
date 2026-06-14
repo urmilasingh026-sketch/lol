@@ -159,34 +159,34 @@ function NexusDesktopLayout() {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [keyboardOnly, setKeyboardOnly] = useState(false);
   const [settingsTab, setSettingsTab] = useState<string>('typing');
-  const store = useStore();
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const ctrl = e.ctrlKey || e.metaKey;
+      const s = useStore.getState();
       if (ctrl && e.key === 'k') { e.preventDefault(); setCmdOpen(v => !v); }
       if (e.key === 'F1') { e.preventDefault(); setShortcutsOpen(v => !v); }
       if (e.key === 'Escape') { setCmdOpen(false); setShortcutsOpen(false); }
-      if (ctrl && e.shiftKey && e.key === 'F') { e.preventDefault(); store.setFocusMode(!store.focusMode); }
+      if (ctrl && e.shiftKey && e.key === 'F') { e.preventDefault(); s.setFocusMode(!s.focusMode); }
       if (ctrl && e.shiftKey && e.key === 'A') { e.preventDefault(); setAnalyticsOpen(v => !v); }
-      if (ctrl && e.key === 'r') { e.preventDefault(); store.resetTyping(); }
-      if (ctrl && e.shiftKey && e.key === 'P') { e.preventDefault(); store.setPerformanceMode(!store.performanceMode); }
-      if (ctrl && e.key === 'p') { e.preventDefault(); store.setPomodoroEnabled(!store.pomodoroEnabled); }
-      if (ctrl && e.key === 'e') { e.preventDefault(); store.exportSettings(); }
-      if (ctrl && e.key === 'g') { e.preventDefault(); store.setGhostMode(!store.ghostMode); }
-      if (ctrl && e.shiftKey && e.key === 'B') { e.preventDefault(); store.setBlindTypingMode(!store.blindTypingMode); }
-      if (ctrl && e.shiftKey && e.key === 'D') { e.preventDefault(); store.setDailyChallengeMode(!store.dailyChallengeMode); }
-      if (ctrl && e.key === '1') { e.preventDefault(); store.setTypingMode('free'); }
-      if (ctrl && e.key === '2') { e.preventDefault(); store.setTypingMode('word'); }
-      if (ctrl && e.key === '3') { e.preventDefault(); store.setTypingMode('timed'); }
-      if (ctrl && e.key === '4') { e.preventDefault(); store.setTypingMode('sprint'); }
-      if (ctrl && e.key === '5') { e.preventDefault(); store.setTypingMode('lesson'); }
-      if (ctrl && e.key === '6') { e.preventDefault(); store.setTypingMode('code'); }
-      if (ctrl && e.shiftKey && e.key === 'R') { e.preventDefault(); store.isRecording ? store.stopRecording() : store.startRecording(); }
+      if (ctrl && e.key === 'r') { e.preventDefault(); s.resetTyping(); }
+      if (ctrl && e.shiftKey && e.key === 'P') { e.preventDefault(); s.setPerformanceMode(!s.performanceMode); }
+      if (ctrl && e.key === 'p') { e.preventDefault(); s.setPomodoroEnabled(!s.pomodoroEnabled); }
+      if (ctrl && e.key === 'e') { e.preventDefault(); s.exportSettings(); }
+      if (ctrl && e.key === 'g') { e.preventDefault(); s.setGhostMode(!s.ghostMode); }
+      if (ctrl && e.shiftKey && e.key === 'B') { e.preventDefault(); s.setBlindTypingMode(!s.blindTypingMode); }
+      if (ctrl && e.shiftKey && e.key === 'D') { e.preventDefault(); s.setDailyChallengeMode(!s.dailyChallengeMode); }
+      if (ctrl && e.key === '1') { e.preventDefault(); s.setTypingMode('free'); }
+      if (ctrl && e.key === '2') { e.preventDefault(); s.setTypingMode('word'); }
+      if (ctrl && e.key === '3') { e.preventDefault(); s.setTypingMode('timed'); }
+      if (ctrl && e.key === '4') { e.preventDefault(); s.setTypingMode('sprint'); }
+      if (ctrl && e.key === '5') { e.preventDefault(); s.setTypingMode('lesson'); }
+      if (ctrl && e.key === '6') { e.preventDefault(); s.setTypingMode('code'); }
+      if (ctrl && e.shiftKey && e.key === 'R') { e.preventDefault(); s.isRecording ? s.stopRecording() : s.startRecording(); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [store]);
+  }, []);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -259,7 +259,10 @@ function NexusTopBar({
   onToggleSidebar: () => void;
   sidebarOpen: boolean;
 }) {
-  const { wpm, accuracy, errors, xp, dailyStreak, isRecording } = useStore();
+  const { wpm, accuracy, errors, xp, dailyStreak, isRecording } = useStore(useShallow(s => ({
+    wpm: s.wpm, accuracy: s.accuracy, errors: s.errors, xp: s.xp,
+    dailyStreak: s.dailyStreak, isRecording: s.isRecording,
+  })));
   const { current: lvlInfo } = getLevelInfo(xp);
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
 
@@ -358,7 +361,9 @@ function NexusSidebar({ open, activeTab, onTabChange, onClose }: {
     const found = SIDEBAR_CATEGORIES.find(c => (c.tabs as readonly string[]).includes(activeTab));
     return found?.id || 'controls';
   });
-  const { xp, dailyStreak, bestWpm, isRecording } = useStore();
+  const { xp, dailyStreak, bestWpm, isRecording } = useStore(useShallow(s => ({
+    xp: s.xp, dailyStreak: s.dailyStreak, bestWpm: s.bestWpm, isRecording: s.isRecording,
+  })));
   const { current: lvlInfo, progress } = getLevelInfo(xp);
   const [online, setOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
 
@@ -497,7 +502,21 @@ function NexusBottomBar({
     dailyChallengeMode, setDailyChallengeMode, isRecording, pomodoroEnabled,
     dailyGoalWpm: wpmGoal, setDailyGoalWpm: setWpmGoal,
     xp, dailyStreak, bestWpm,
-  } = useStore();
+  } = useStore(useShallow(s => ({
+    wpm: s.wpm, accuracy: s.accuracy, errors: s.errors,
+    typingMode: s.typingMode, setTypingMode: s.setTypingMode,
+    wpmHistory: s.wpmHistory, totalKeystrokes: s.totalKeystrokes, sessionComplete: s.sessionComplete,
+    focusMode: s.focusMode, setFocusMode: s.setFocusMode,
+    performanceMode: s.performanceMode, setPerformanceMode: s.setPerformanceMode,
+    resetTyping: s.resetTyping, exportSettings: s.exportSettings,
+    theme: s.theme, setTheme: s.setTheme,
+    ghostMode: s.ghostMode, setGhostMode: s.setGhostMode,
+    blindTypingMode: s.blindTypingMode, setBlindTypingMode: s.setBlindTypingMode,
+    dailyChallengeMode: s.dailyChallengeMode, setDailyChallengeMode: s.setDailyChallengeMode,
+    isRecording: s.isRecording, pomodoroEnabled: s.pomodoroEnabled,
+    dailyGoalWpm: s.dailyGoalWpm, setDailyGoalWpm: s.setDailyGoalWpm,
+    xp: s.xp, dailyStreak: s.dailyStreak, bestWpm: s.bestWpm,
+  })));
   const [sessionTime, setSessionTime] = useState(0);
   useEffect(() => {
     const iv = setInterval(() => setSessionTime(t => t + 1), 1000);
@@ -627,7 +646,6 @@ function NexusMobileLayout() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
   const [modeOpen, setModeOpen] = useState(false);
-  const store = useStore();
   const {
     wpm, accuracy, xp, dailyStreak, typingMode, setTypingMode,
     isRecording, isPlaying, recordedEvents, startRecording, stopRecording,
@@ -636,7 +654,24 @@ function NexusMobileLayout() {
     ghostMode, setGhostMode, metronomeEnabled, setMetronome, bpm, setBpm,
     totalKeystrokes, bestWpm, errors, dailyGoalWpm: wpmGoal, loopEnabled, setLoop,
     blindTypingMode, setBlindTypingMode, dailyChallengeMode, setDailyChallengeMode,
-  } = store;
+  } = useStore(useShallow(s => ({
+    wpm: s.wpm, accuracy: s.accuracy, xp: s.xp, dailyStreak: s.dailyStreak,
+    typingMode: s.typingMode, setTypingMode: s.setTypingMode,
+    isRecording: s.isRecording, isPlaying: s.isPlaying, recordedEvents: s.recordedEvents,
+    startRecording: s.startRecording, stopRecording: s.stopRecording,
+    playRecording: s.playRecording, stopPlayback: s.stopPlayback,
+    volume: s.volume, setVolume: s.setVolume,
+    focusMode: s.focusMode, setFocusMode: s.setFocusMode,
+    theme: s.theme, setTheme: s.setTheme, resetTyping: s.resetTyping,
+    performanceMode: s.performanceMode, setPerformanceMode: s.setPerformanceMode,
+    ghostMode: s.ghostMode, setGhostMode: s.setGhostMode,
+    metronomeEnabled: s.metronomeEnabled, setMetronome: s.setMetronome,
+    bpm: s.bpm, setBpm: s.setBpm,
+    totalKeystrokes: s.totalKeystrokes, bestWpm: s.bestWpm, errors: s.errors,
+    dailyGoalWpm: s.dailyGoalWpm, loopEnabled: s.loopEnabled, setLoop: s.setLoop,
+    blindTypingMode: s.blindTypingMode, setBlindTypingMode: s.setBlindTypingMode,
+    dailyChallengeMode: s.dailyChallengeMode, setDailyChallengeMode: s.setDailyChallengeMode,
+  })));
 
   const { current: lvlInfo, progress } = getLevelInfo(xp);
   const hasRecording = recordedEvents.length > 0;
