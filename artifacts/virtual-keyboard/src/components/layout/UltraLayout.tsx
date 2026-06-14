@@ -140,7 +140,7 @@ export function UltraLayout() {
 
   return (
     <div className={cn(
-      'flex-1 w-full flex workspace-bg relative overflow-hidden',
+      'flex-1 w-full flex workspace-bg workspace-grid relative overflow-hidden',
       THEME_CLASSES[theme] || 'theme-aurora',
       highContrast && 'high-contrast',
       reduceMotion && 'reduce-motion',
@@ -263,7 +263,7 @@ function NexusDesktopLayout() {
   );
 }
 
-// ── Nexus Top Bar — simplified: Logo + Stats + Settings toggle ────────────────
+// ── Nexus Top Bar ─────────────────────────────────────────────────────────────
 function NexusTopBar({
   onToggleSidebar, sidebarOpen,
 }: {
@@ -278,47 +278,92 @@ function NexusTopBar({
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
 
   return (
-    <div className="flex items-center h-11 border-b border-white/07 bg-black/50 backdrop-blur-xl shrink-0 px-3 gap-3">
+    <div className="flex items-center h-12 shrink-0 px-4 gap-3 relative"
+      style={{
+        background: 'linear-gradient(180deg, rgba(8,6,20,0.98) 0%, rgba(10,7,26,0.96) 100%)',
+        borderBottom: '1px solid rgba(255,255,255,0.055)',
+        backdropFilter: 'blur(20px)',
+      }}>
+
+      {/* Top edge shine */}
+      <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.35) 30%, rgba(96,165,250,0.25) 70%, transparent 100%)' }} />
 
       {/* Logo + Brand */}
-      <div className="flex items-center gap-2 shrink-0">
-        <img src={logoImg} alt="UK Aurora" className="w-7 h-7 rounded-xl object-contain" />
+      <div className="flex items-center gap-2.5 shrink-0">
+        <div className="relative">
+          <img src={logoImg} alt="UK Aurora" className="w-7 h-7 rounded-xl object-contain"
+            style={{ boxShadow: '0 0 12px rgba(139,92,246,0.4)' }} />
+        </div>
         <div className="leading-none">
-          <div className="text-[0.58rem] font-black text-white/90 tracking-wide">UK AURORA</div>
-          <div className="text-[0.36rem] text-violet-300/60 uppercase tracking-widest">Ultra Premium v5</div>
+          <div className="text-[0.6rem] font-black tracking-[0.12em] uppercase"
+            style={{ background: 'linear-gradient(90deg, #fff 30%, #c4b5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            UK Aurora
+          </div>
+          <div className="text-[0.34rem] uppercase tracking-[0.2em] font-medium" style={{ color: 'rgba(167,139,250,0.45)' }}>
+            Virtual Keyboard
+          </div>
         </div>
       </div>
 
       {/* Divider */}
-      <div className="w-px h-6 bg-white/10 shrink-0" />
+      <div className="w-px h-5 shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
 
-      {/* Stats Strip */}
-      <div className="flex items-center gap-1 flex-1 overflow-x-auto scrollbar-hide">
-        <TopStat label="WPM" value={wpm} color="text-violet-300" />
-        <TopStat label="ACC" value={`${accuracy}%`} color={accColor} />
-        <TopStat label="ERR" value={errors} color={errors > 5 ? 'text-red-400' : 'text-white/40'} />
-        <TopStat label="LV" value={lvlInfo.level} color="text-amber-300" />
-        <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/04 border border-white/07 shrink-0">
-          <Flame className="w-2.5 h-2.5 text-amber-400" />
-          <span className="text-[0.55rem] font-bold text-amber-300">{dailyStreak}</span>
+      {/* Stats chips */}
+      <div className="flex items-center gap-1.5 flex-1 overflow-x-auto scrollbar-hide">
+        {/* WPM */}
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+          style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
+          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(167,139,250,0.55)' }}>WPM</span>
+          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#c4b5fd' }}>{wpm}</span>
         </div>
+        {/* ACC */}
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.28)' }}>ACC</span>
+          <span className="font-mono font-black text-[0.65rem]" style={{ color: accColor }}>{accuracy}%</span>
+        </div>
+        {/* ERR */}
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.22)' }}>ERR</span>
+          <span className="font-mono font-black text-[0.65rem]" style={{ color: errors > 5 ? '#f87171' : 'rgba(255,255,255,0.3)' }}>{errors}</span>
+        </div>
+        {/* Level */}
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+          style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)' }}>
+          <span className="text-[0.44rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(253,211,77,0.5)' }}>LV</span>
+          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#fde68a' }}>{lvlInfo.level}</span>
+        </div>
+        {/* Streak */}
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+          style={{ background: 'rgba(251,146,60,0.08)', border: '1px solid rgba(251,146,60,0.18)' }}>
+          <Flame className="w-2.5 h-2.5" style={{ color: '#fb923c' }} />
+          <span className="font-mono font-black text-[0.65rem]" style={{ color: '#fdba74' }}>{dailyStreak}</span>
+        </div>
+
         {isRecording && (
-          <div className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-red-500/15 border border-red-500/40 shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse inline-block" />
-            <span className="text-[0.48rem] text-red-400 font-bold">REC</span>
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg shrink-0"
+            style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.35)' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse inline-block" />
+            <span className="text-[0.44rem] font-bold" style={{ color: '#f87171' }}>REC</span>
           </div>
         )}
       </div>
 
       {/* Settings toggle */}
       <button onClick={onToggleSidebar} title="Toggle Settings"
-        className={cn(
-          'flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[0.56rem] font-semibold transition-all shrink-0',
-          sidebarOpen
-            ? 'bg-violet-500/25 border-violet-500/50 text-violet-300'
-            : 'bg-white/05 border-white/10 text-white/50 hover:text-white hover:border-white/25'
-        )}>
-        <Settings className="w-3.5 h-3.5" />
+        className="flex items-center gap-1.5 shrink-0 transition-all active:scale-95"
+        style={{
+          padding: '6px 14px',
+          borderRadius: '12px',
+          background: sidebarOpen ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)',
+          border: sidebarOpen ? '1px solid rgba(139,92,246,0.4)' : '1px solid rgba(255,255,255,0.09)',
+          color: sidebarOpen ? '#c4b5fd' : 'rgba(255,255,255,0.45)',
+          fontSize: '0.56rem', fontWeight: 600,
+          boxShadow: sidebarOpen ? '0 0 14px rgba(139,92,246,0.15)' : 'none',
+        }}>
+        <Settings className="w-3 h-3" />
         Settings
       </button>
     </div>
@@ -551,27 +596,43 @@ function NexusBottomBar({
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
 
   return (
-    <div className="flex items-center gap-1 h-11 border-t border-white/07 bg-black/50 backdrop-blur-xl shrink-0 px-2 overflow-x-auto scrollbar-hide">
+    <div className="flex items-center h-12 shrink-0 px-3 gap-2 relative overflow-x-auto scrollbar-hide"
+      style={{
+        background: 'linear-gradient(0deg, rgba(6,4,18,0.98) 0%, rgba(9,7,22,0.96) 100%)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(20px)',
+      }}>
+
+      {/* Bottom edge glow */}
+      <div className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.2) 40%, rgba(96,165,250,0.15) 60%, transparent)' }} />
 
       {/* Live Stats */}
-      <div className="flex items-center gap-1 shrink-0 pr-2 border-r border-white/07 mr-1">
-        <StatChip value={wpm} label="WPM" color="#a78bfa" />
-        <StatChip value={`${accuracy}%`} label="ACC" color={accColor} />
-        <StatChip value={errors} label="ERR" color={errors > 5 ? '#f87171' : '#ffffff40'} />
-        <StatChip value={formatTime(Math.floor(sessionTime))} label="TIME" color="#60a5fa" />
+      <div className="flex items-center gap-1.5 shrink-0 pr-3"
+        style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+        {[
+          { v: wpm,                               l: 'WPM',  c: '#a78bfa', bg: 'rgba(139,92,246,0.1)',  bd: 'rgba(139,92,246,0.2)' },
+          { v: `${accuracy}%`,                    l: 'ACC',  c: accColor,  bg: 'rgba(255,255,255,0.04)', bd: 'rgba(255,255,255,0.08)' },
+          { v: errors,                            l: 'ERR',  c: errors > 5 ? '#f87171' : 'rgba(255,255,255,0.3)', bg: 'rgba(255,255,255,0.03)', bd: 'rgba(255,255,255,0.06)' },
+          { v: formatTime(Math.floor(sessionTime)), l: 'TIME', c: '#60a5fa', bg: 'rgba(96,165,250,0.08)',  bd: 'rgba(96,165,250,0.18)' },
+        ].map(s => (
+          <div key={s.l} className="flex items-center gap-1 px-2 py-1 rounded-lg shrink-0"
+            style={{ background: s.bg, border: `1px solid ${s.bd}` }}>
+            <span className="text-[0.42rem] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.25)' }}>{s.l}</span>
+            <span className="font-mono font-black text-[0.62rem]" style={{ color: s.c }}>{s.v}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Extended mode pills */}
-      <div className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide shrink-0 pr-2 border-r border-white/07 mr-1" style={{ maxWidth: 320 }}>
+      {/* Mode pills */}
+      <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide shrink-0 pr-3"
+        style={{ maxWidth: 340, borderRight: '1px solid rgba(255,255,255,0.07)' }}>
         {QUICK_MODES.slice(0, 12).map(m => (
           <button key={m.value} onClick={() => setTypingMode(m.value as any)}
-            className={cn(
-              'px-2 py-0.5 rounded-full text-[0.48rem] font-semibold whitespace-nowrap border shrink-0 transition-all',
-              typingMode === m.value
-                ? 'border-opacity-50'
-                : 'bg-white/03 border-white/06 text-white/30 hover:text-white/55 hover:border-white/15'
-            )}
-            style={typingMode === m.value ? { background: `${m.color}18`, borderColor: `${m.color}50`, color: m.color } : {}}
+            className="px-2.5 py-1 rounded-full text-[0.47rem] font-semibold whitespace-nowrap border shrink-0 transition-all"
+            style={typingMode === m.value
+              ? { background: `${m.color}18`, borderColor: `${m.color}48`, color: m.color }
+              : { background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.28)' }}
           >
             {m.label}
           </button>
@@ -701,41 +762,51 @@ function NexusMobileLayout() {
   return (
     <div className="flex w-full h-full">
       {/* ── Left vertical control strip ── */}
-      <div className="flex flex-col items-center gap-1 py-1 px-0.5 border-r border-white/08 bg-black/50 backdrop-blur-2xl shrink-0 w-12">
+      <div className="flex flex-col items-center gap-1.5 py-2 px-1 shrink-0 w-12 relative"
+        style={{
+          background: 'linear-gradient(180deg, rgba(8,6,20,0.98) 0%, rgba(10,7,24,0.97) 100%)',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(20px)',
+        }}>
+
+        {/* Right edge glow line */}
+        <div className="absolute right-0 top-8 bottom-8 w-px pointer-events-none"
+          style={{ background: 'linear-gradient(180deg, transparent, rgba(139,92,246,0.3) 40%, rgba(139,92,246,0.3) 60%, transparent)' }} />
 
         {/* Logo */}
-        <img src={logoImg} alt="UK Aurora" className="w-8 h-8 rounded-xl object-contain shrink-0" />
+        <img src={logoImg} alt="UK Aurora" className="w-8 h-8 rounded-xl object-contain shrink-0"
+          style={{ boxShadow: '0 0 10px rgba(139,92,246,0.35)' }} />
 
         {/* Divider */}
-        <div className="w-8 h-px bg-white/10 shrink-0" />
+        <div className="w-7 h-px shrink-0" style={{ background: 'rgba(255,255,255,0.08)' }} />
 
         {/* Live WPM — tap for stats */}
-        <button onClick={() => setStatsOpen(v => !v)} className="flex flex-col items-center gap-0 text-center shrink-0" title="Stats">
-          <span className="text-[0.72rem] font-black text-violet-300 leading-none">{wpm}</span>
-          <span className="text-[0.36rem] text-white/25 uppercase tracking-wider">WPM</span>
+        <button onClick={() => setStatsOpen(v => !v)} className="flex flex-col items-center gap-0 text-center shrink-0 py-0.5 px-1 rounded-lg w-full transition-all hover:bg-white/05" title="Stats">
+          <span className="text-[0.76rem] font-black leading-none" style={{ color: '#c4b5fd' }}>{wpm}</span>
+          <span className="text-[0.34rem] uppercase tracking-wider font-semibold" style={{ color: 'rgba(167,139,250,0.4)' }}>WPM</span>
         </button>
 
         {/* Accuracy */}
         <div className="flex flex-col items-center gap-0 text-center shrink-0">
-          <span className="text-[0.62rem] font-bold leading-none" style={{ color: accColor }}>{accuracy}%</span>
-          <span className="text-[0.36rem] text-white/25 uppercase">ACC</span>
+          <span className="text-[0.65rem] font-black leading-none" style={{ color: accColor }}>{accuracy}%</span>
+          <span className="text-[0.34rem] uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.2)' }}>ACC</span>
         </div>
 
         {/* Streak */}
         <div className="flex flex-col items-center gap-0 text-center shrink-0">
-          <Flame className="w-3.5 h-3.5 text-amber-400" />
-          <span className="text-[0.44rem] font-bold text-amber-300">{dailyStreak}</span>
+          <Flame className="w-3.5 h-3.5" style={{ color: '#fb923c' }} />
+          <span className="text-[0.44rem] font-black" style={{ color: '#fdba74' }}>{dailyStreak}</span>
         </div>
 
-        {/* Level */}
-        <div className="flex flex-col items-center gap-0 text-center shrink-0">
-          <div className="w-7 h-1.5 rounded-full bg-white/08 overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-400 rounded-full transition-all" style={{ width: `${progress}%` }} />
+        {/* Level progress bar */}
+        <div className="flex flex-col items-center gap-0.5 text-center shrink-0 w-full px-1.5">
+          <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+            <div className="h-full rounded-full transition-all" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #7c3aed, #c026d3)' }} />
           </div>
-          <span className="text-[0.36rem] text-white/20">Lv{lvlInfo.level}</span>
+          <span className="text-[0.34rem] uppercase font-bold" style={{ color: 'rgba(167,139,250,0.35)' }}>Lv{lvlInfo.level}</span>
         </div>
 
-        <div className="w-8 h-px bg-white/10 shrink-0" />
+        <div className="w-7 h-px shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />
 
         {/* Prev mode */}
         <MobileCtrlBtn onClick={cycleModePrev} title="Previous Mode">
