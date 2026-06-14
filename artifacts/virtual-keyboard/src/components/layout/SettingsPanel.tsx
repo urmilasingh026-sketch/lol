@@ -928,6 +928,16 @@ const RGB_SWATCH: Record<string, string> = {
   'autumn-leaves':  'linear-gradient(135deg,#92400e,#dc2626)',
   'spring-bloom':   'linear-gradient(135deg,#86efac,#fbcfe8)',
   'bamboo-rgb':     'linear-gradient(135deg,#166534,#4ade80)',
+  'winter-frost':   'linear-gradient(135deg,#bfdbfe,#e0f2fe)',
+  'summer-heat':    'linear-gradient(135deg,#fbbf24,#f97316)',
+  'cherry':         'linear-gradient(135deg,#fbcfe8,#f472b6)',
+  'koi':            'linear-gradient(135deg,#f97316,#fef9c3)',
+  'thunderstorm':   'linear-gradient(135deg,#334155,#7c3aed)',
+  'blizzard':       'linear-gradient(135deg,#e0f2fe,#bfdbfe)',
+  'volcanic':       'linear-gradient(135deg,#7c2d12,#fbbf24)',
+  'deep-sea':       'linear-gradient(135deg,#0c4a6e,#06b6d4)',
+  'pastel-rainbow': 'linear-gradient(90deg,#fda4af,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',
+  'ultraviolet':    'linear-gradient(135deg,#4c1d95,#ddd6fe)',
 };
 
 const RGB_CATS = [
