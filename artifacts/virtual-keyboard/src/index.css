@@ -507,16 +507,9 @@
   box-shadow: 0 -24px 80px rgba(0, 0, 0, 0.75);
 }
 
-/* ======================= CUSTOM SCROLLBAR ======================= */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(180, 92, 255, 0.35);
-}
+/* ======================= SCROLLBAR HIDDEN EVERYWHERE ======================= */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
 
 /* ======================= RANGE INPUT ======================= */
 input[type="range"] {

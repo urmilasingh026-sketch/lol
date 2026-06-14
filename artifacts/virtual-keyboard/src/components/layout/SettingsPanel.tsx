@@ -32,8 +32,6 @@ const TABS = [
   { id: 'performance',   icon: Zap,              label: 'Perf',         color: 'text-yellow-400' },
   { id: 'challenges',    icon: Swords,           label: 'Challenges',   color: 'text-red-400' },
   { id: 'shortcuts2',    icon: Cpu,              label: 'Shortcuts',    color: 'text-rose-300' },
-  { id: 'tips',          icon: Lightbulb,        label: 'Tips',         color: 'text-yellow-300' },
-  { id: 'social',        icon: Users,            label: 'Social',       color: 'text-emerald-400' },
   { id: 'presets',       icon: Database,         label: 'Presets',      color: 'text-indigo-400' },
   { id: 'recordings',    icon: Mic2,             label: 'Recordings',   color: 'text-pink-400' },
   { id: 'achievements',  icon: Trophy,           label: 'Achieve',      color: 'text-orange-400' },
