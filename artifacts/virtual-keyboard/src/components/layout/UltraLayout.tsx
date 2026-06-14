@@ -85,16 +85,27 @@ const QUICK_MODES = [
   { value: 'math-facts', label: '📐 Math', color: '#a3e635' },
 ] as const;
 
+function checkLayout(): 'desktop' | 'mobile' {
+  if (typeof window === 'undefined') return 'desktop';
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isLandscapeMobile = h < 520 && w > h && w <= 1024;
+  const isPortraitPhone = w < 768 && h > w;
+  return (isLandscapeMobile || isPortraitPhone) ? 'mobile' : 'desktop';
+}
+
 function useLayout() {
-  const [layout, setLayout] = useState<'desktop' | 'mobile'>(() => {
-    if (typeof window === 'undefined') return 'desktop';
-    return window.innerWidth < 1024 && window.innerHeight < 500 ? 'mobile' : 'desktop';
-  });
+  const [layout, setLayout] = useState<'desktop' | 'mobile'>(checkLayout);
   useEffect(() => {
-    const fn = () => setLayout(window.innerWidth < 1024 && window.innerHeight < 500 ? 'mobile' : 'desktop');
-    window.addEventListener('resize', fn);
-    window.addEventListener('orientationchange', fn);
-    return () => { window.removeEventListener('resize', fn); window.removeEventListener('orientationchange', fn); };
+    const fn = () => setLayout(checkLayout());
+    window.addEventListener('resize', fn, { passive: true });
+    window.addEventListener('orientationchange', fn, { passive: true });
+    try { screen.orientation.addEventListener('change', fn); } catch {}
+    return () => {
+      window.removeEventListener('resize', fn);
+      window.removeEventListener('orientationchange', fn);
+      try { screen.orientation.removeEventListener('change', fn); } catch {}
+    };
   }, []);
   return layout;
 }

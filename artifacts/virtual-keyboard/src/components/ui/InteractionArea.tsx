@@ -34,17 +34,22 @@ function FlowingLine({
       ref={containerRef}
       className={cn(
         'relative w-full overflow-hidden flex items-center transition-all duration-200 border',
-        compact ? 'h-9 rounded-xl' : 'h-11 rounded-xl',
-        isWarning ? 'border-orange-400/50 shadow-[0_0_14px_rgba(251,146,60,0.15)]' :
-        isWrong   ? 'border-red-400/55 shadow-[0_0_14px_rgba(255,80,80,0.15)]' :
-                    'border-white/[0.11]',
+        compact ? 'h-10 rounded-xl' : 'h-12 sm:h-14 rounded-2xl',
+        isWarning ? 'border-orange-400/50 shadow-[0_0_18px_rgba(251,146,60,0.18)]' :
+        isWrong   ? 'border-red-400/55 shadow-[0_0_18px_rgba(255,80,80,0.18)]' :
+                    'border-white/[0.13]',
       )}
       style={{
-        background: isWrong ? 'rgba(255,100,100,0.06)' : isWarning ? 'rgba(251,146,60,0.05)' : 'rgba(255,255,255,0.05)',
+        background: isWrong
+          ? 'rgba(255,80,80,0.07)'
+          : isWarning
+          ? 'rgba(251,146,60,0.06)'
+          : 'rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(8px)',
       }}
     >
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-12 z-10 bg-gradient-to-r from-[#09090f] via-[#09090f]/75 to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-14 z-10 bg-gradient-to-l from-[#09090f] via-[#09090f]/75 to-transparent" />
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-10 z-10 bg-gradient-to-r from-black/70 to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-10 z-10 bg-gradient-to-l from-black/70 to-transparent" />
 
       <div
         ref={innerRef}
@@ -57,14 +62,14 @@ function FlowingLine({
 
           if (isCompleted) return (
             <span key={i} ref={el => { wordRefs.current[i] = el; }}
-              className={cn('font-mono tracking-wider text-white/18 select-none', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>
+              className={cn('font-mono tracking-wider text-white/20 select-none', compact ? 'text-sm' : 'text-base sm:text-lg')}>
               {word}
             </span>
           );
 
           if (isCurrent) return (
             <span key={i} ref={el => { wordRefs.current[i] = el; }}
-              className={cn('font-mono tracking-wider', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>
+              className={cn('font-mono tracking-wider', compact ? 'text-sm' : 'text-base sm:text-lg')}>
               {word.split('').map((ch, j) => {
                 const isTyped = j < typedText.length;
                 const typedCh = typedText[j];
@@ -74,9 +79,9 @@ function FlowingLine({
                 return (
                   <span key={j} className={cn(
                     'transition-colors duration-75',
-                    !isTyped && 'text-white/82',
-                    correct && 'text-emerald-300 drop-shadow-[0_0_6px_rgba(110,231,183,0.7)]',
-                    wrong && 'text-red-400 bg-red-400/14 rounded-sm',
+                    !isTyped && 'text-white/85',
+                    correct && 'text-emerald-300 drop-shadow-[0_0_8px_rgba(110,231,183,0.8)]',
+                    wrong && 'text-red-400 bg-red-400/15 rounded-sm',
                     isCursor && 'border-b-[2.5px] border-violet-400 animate-pulse',
                   )}>
                     {isTyped ? (typedCh === ' ' ? '\u00a0' : typedCh) : ch}
@@ -89,7 +94,7 @@ function FlowingLine({
 
           return (
             <span key={i} ref={el => { wordRefs.current[i] = el; }}
-              className={cn('font-mono tracking-wider text-white/22 select-none', compact ? 'text-[0.72rem]' : 'text-[0.8rem]')}>
+              className={cn('font-mono tracking-wider text-white/28 select-none', compact ? 'text-sm' : 'text-base sm:text-lg')}>
               {word}
             </span>
           );
