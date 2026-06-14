@@ -717,31 +717,16 @@ function NexusBottomBar({
 function NexusMobileLayout() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const {
-    wpm, accuracy, xp, dailyStreak, typingMode, setTypingMode,
-    isRecording, isPlaying, recordedEvents, startRecording, stopRecording,
-    playRecording, stopPlayback, volume, setVolume,
-    resetTyping,
+    wpm, accuracy, xp, dailyStreak,
+    volume, setVolume, resetTyping,
   } = useStore(useShallow(s => ({
     wpm: s.wpm, accuracy: s.accuracy, xp: s.xp, dailyStreak: s.dailyStreak,
-    typingMode: s.typingMode, setTypingMode: s.setTypingMode,
-    isRecording: s.isRecording, isPlaying: s.isPlaying, recordedEvents: s.recordedEvents,
-    startRecording: s.startRecording, stopRecording: s.stopRecording,
-    playRecording: s.playRecording, stopPlayback: s.stopPlayback,
     volume: s.volume, setVolume: s.setVolume,
     resetTyping: s.resetTyping,
   })));
 
   const { current: lvlInfo } = getLevelInfo(xp);
-  const hasRecording = recordedEvents.length > 0;
   const accColor = accuracy >= 97 ? '#4ade80' : accuracy >= 85 ? '#fbbf24' : '#f87171';
-
-  const mobileSeasonalMode = useMemo(() => getSeasonalHoliday() || getCurrentSeason(), []);
-  const MOBILE_MODES = useMemo(() => [
-    'free', 'word', 'sentence', 'timed', 'sprint', 'lesson', 'code', 'quotes', 'zen',
-    'gaming', 'science', 'history', 'poetry', 'geography', 'math-facts', mobileSeasonalMode,
-  ] as const, [mobileSeasonalMode]);
-
-  const modeIdx = MOBILE_MODES.indexOf(typingMode as any);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -792,24 +777,6 @@ function NexusMobileLayout() {
 
         {/* Action buttons */}
         <div className="flex items-center gap-1 shrink-0">
-          {/* Record */}
-          <MobileCtrlBtn
-            onClick={isRecording ? stopRecording : startRecording}
-            title={isRecording ? 'Stop Recording' : 'Record'}
-            className={isRecording ? 'text-red-400 border-red-500/40 bg-red-500/15 animate-pulse' : 'text-rose-400/60'}
-          >
-            {isRecording ? <Square className="w-3 h-3 fill-current" /> : <Circle className="w-3 h-3" />}
-          </MobileCtrlBtn>
-          {/* Play recording */}
-          {(hasRecording || isPlaying) && (
-            <MobileCtrlBtn
-              onClick={isPlaying ? stopPlayback : playRecording}
-              title={isPlaying ? 'Stop Playback' : 'Play'}
-              className={isPlaying ? 'text-emerald-400 border-emerald-400/40 bg-emerald-500/10' : ''}
-            >
-              {isPlaying ? <Pause className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3" />}
-            </MobileCtrlBtn>
-          )}
           {/* Volume */}
           <MobileCtrlBtn onClick={() => setVolume(volume === 0 ? 0.7 : 0)} title={volume === 0 ? 'Unmute' : 'Mute'}>
             {volume === 0 ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
