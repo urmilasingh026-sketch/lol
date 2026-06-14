@@ -338,11 +338,11 @@ const SIDEBAR_CATEGORIES = [
   },
   {
     id: 'gamify', label: 'Game', icon: Trophy, color: '#fb923c',
-    tabs: ['challenges', 'trainer', 'gamify', 'achievements'],
+    tabs: ['challenges', 'achievements'],
   },
   {
     id: 'system', label: 'System', icon: Bolt, color: '#fbbf24',
-    tabs: ['ai', 'cloud', 'privacy', 'pro', 'shortcuts2', 'social', 'labs', 'tips'],
+    tabs: ['shortcuts2', 'social', 'tips'],
   },
   {
     id: 'data', label: 'Data', icon: Save, color: '#818cf8',
