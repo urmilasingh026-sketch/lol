@@ -251,7 +251,7 @@ function KeyComponent({ id, label, sub, widthMultiplier = 1, instrumentClass, rg
     isPressed, shiftHeld,
     rgbEnabled, visualsEnabled, rgbMode, rgbCustomColor, glowIntensity,
     rainbowModeEnabled, fadeDuration, getNextRainbowColor, pressKey, releaseKey,
-    showHeatmap, keyHeatmap, showNoteLabels,
+    showHeatmap, showNoteLabels,
     keyShape, keyPressEffect, keyShadowIntensity, keyGlowSpread, keyGlowBlur,
     keyBorderStyle, keyShimmer, mirrorKeyboard, keyLabelStyle, showFingerGuide,
   } = useStore(useShallow(s => ({
@@ -268,7 +268,6 @@ function KeyComponent({ id, label, sub, widthMultiplier = 1, instrumentClass, rg
     pressKey: s.pressKey,
     releaseKey: s.releaseKey,
     showHeatmap: s.showHeatmap,
-    keyHeatmap: s.keyHeatmap,
     showNoteLabels: s.showNoteLabels,
     keyShape: s.keyShape,
     keyPressEffect: s.keyPressEffect,
@@ -282,6 +281,10 @@ function KeyComponent({ id, label, sub, widthMultiplier = 1, instrumentClass, rg
     keyLabelStyle: s.keyLabelStyle,
     showFingerGuide: s.showFingerGuide,
   })));
+
+  // Per-key heatmap selectors — only this key re-renders when its own count changes
+  const heatmapCount = useStore(s => s.showHeatmap ? (s.keyHeatmap[id] ?? 0) : 0);
+  const heatmapMax = useStore(s => s.showHeatmap ? Math.max(1, s.heatmapMax ?? 1) : 1);
 
   const keyRef = useRef<HTMLDivElement>(null);
   const isPressedRef = useRef(false);
@@ -495,15 +498,16 @@ function KeyComponent({ id, label, sub, widthMultiplier = 1, instrumentClass, rg
     minWidth: 0,
   };
 
-  const pressedStyle: React.CSSProperties = isVisuallyActive && glowColor ? {
+  const glowRgb = glowColor ? hexToRgb(glowColor) : null;
+  const pressedStyle: React.CSSProperties = isVisuallyActive && glowColor && glowRgb ? {
     boxShadow: `
-      0 0 ${8 * activeIntensity}px rgba(${hexToRgb(glowColor)}, 0.95),
-      0 0 ${22 * activeIntensity}px rgba(${hexToRgb(glowColor)}, 0.7),
-      0 0 ${45 * activeIntensity}px rgba(${hexToRgb(glowColor)}, 0.45),
-      inset 0 0 ${12 * activeIntensity}px rgba(${hexToRgb(glowColor)}, 0.6)
+      0 0 ${8 * activeIntensity}px rgba(${glowRgb}, 0.95),
+      0 0 ${22 * activeIntensity}px rgba(${glowRgb}, 0.7),
+      0 0 ${45 * activeIntensity}px rgba(${glowRgb}, 0.45),
+      inset 0 0 ${12 * activeIntensity}px rgba(${glowRgb}, 0.6)
     `,
     borderColor: glowColor,
-    background: `linear-gradient(160deg, rgba(${hexToRgb(glowColor)}, ${isPressed ? 0.32 : 0.16}) 0%, rgba(${hexToRgb(glowColor)}, ${isPressed ? 0.14 : 0.06}) 100%)`,
+    background: `linear-gradient(160deg, rgba(${glowRgb}, ${isPressed ? 0.32 : 0.16}) 0%, rgba(${glowRgb}, ${isPressed ? 0.14 : 0.06}) 100%)`,
     transform: isPressed ? 'translateY(2px) scale(0.962)' : 'translateY(1px) scale(0.978)',
     color: glowColor,
   } : {};
@@ -521,8 +525,6 @@ function KeyComponent({ id, label, sub, widthMultiplier = 1, instrumentClass, rg
   })() : {};
 
   // Heatmap overlay
-  const heatmapCount = (showHeatmap && keyHeatmap) ? (keyHeatmap[id] ?? 0) : 0;
-  const heatmapMax = (showHeatmap && keyHeatmap) ? Math.max(1, ...Object.values(keyHeatmap)) : 1;
   const heatmapNorm = heatmapCount / heatmapMax;
   const heatmapStyle: React.CSSProperties = showHeatmap && heatmapCount > 0 ? {
     '--heatmap-opacity': `${heatmapNorm * 0.65}`,

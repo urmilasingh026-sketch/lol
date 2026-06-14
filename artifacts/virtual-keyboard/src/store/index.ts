@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { TYPING_WORDS } from '@/lib/wordList';
 import { getContentForMode } from '@/lib/content';
 import { ACHIEVEMENTS, type AchievementStats, getLevelInfo } from '@/lib/achievements';
@@ -864,6 +864,7 @@ interface AppState {
   keySize: number;
   showHeatmap: boolean;
   keyHeatmap: Record<string, number>;
+  heatmapMax: number;
 
   // Accessibility
   highContrast: boolean;
@@ -1626,6 +1627,32 @@ function checkAchievements(stats: AchievementStats, unlocked: string[]): string 
   return null;
 }
 
+const throttledStorage = (() => {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  let pendingKey: string | null = null;
+  let pendingValue: string | null = null;
+  return {
+    getItem: (name: string) => { try { return localStorage.getItem(name); } catch { return null; } },
+    setItem: (name: string, value: string) => {
+      pendingKey = name;
+      pendingValue = value;
+      if (!timer) {
+        timer = setTimeout(() => {
+          if (pendingKey && pendingValue !== null) {
+            try { localStorage.setItem(pendingKey, pendingValue); } catch {}
+          }
+          timer = null;
+          pendingKey = null;
+          pendingValue = null;
+        }, 1500);
+      }
+    },
+    removeItem: (name: string) => { try { localStorage.removeItem(name); } catch {} },
+  };
+})();
+
+let _lastAchievementCheckTime = 0;
+
 export const useStore = create<AppState>()(
   persist(
     (set, get) => {
@@ -1664,6 +1691,7 @@ export const useStore = create<AppState>()(
         keySize: 100,
         showHeatmap: false,
         keyHeatmap: {},
+        heatmapMax: 0,
 
         // Accessibility
         highContrast: false,
@@ -2003,7 +2031,7 @@ export const useStore = create<AppState>()(
         setScaleEnabled: (v) => set({ scaleEnabled: v }),
         setKeySize: (v) => set({ keySize: v }),
         setShowHeatmap: (v) => set({ showHeatmap: v }),
-        clearHeatmap: () => set({ keyHeatmap: {} }),
+        clearHeatmap: () => set({ keyHeatmap: {}, heatmapMax: 0 }),
         setHighContrast: (v) => set({ highContrast: v }),
         setReduceMotion: (v) => set({ reduceMotion: v }),
         setTimedDuration: (s) => set({ timedDuration: s, timedTimeLeft: s }),
@@ -2425,8 +2453,10 @@ export const useStore = create<AppState>()(
           const updates: Partial<AppState> = { activeKeys: newActive };
 
           // Update heatmap
-          const newHeatmap = { ...state.keyHeatmap, [code]: (state.keyHeatmap[code] || 0) + 1 };
+          const newCount = (state.keyHeatmap[code] || 0) + 1;
+          const newHeatmap = { ...state.keyHeatmap, [code]: newCount };
           updates.keyHeatmap = newHeatmap;
+          if (newCount > (state.heatmapMax || 0)) updates.heatmapMax = newCount;
 
           // Update notes played count for musical keys
           const instrument = getInstrumentForKey(code, newActive.has('ShiftLeft') || newActive.has('ShiftRight'));
@@ -2545,7 +2575,10 @@ export const useStore = create<AppState>()(
 
           set(updates);
 
-          // Check achievements after state update (async)
+          // Check achievements after state update (async) — throttled to max once per 3s
+          const _now = Date.now();
+          if (_now - _lastAchievementCheckTime > 3000) {
+            _lastAchievementCheckTime = _now;
           setTimeout(() => {
             const s = get();
             const stats: AchievementStats = {
@@ -2568,6 +2601,7 @@ export const useStore = create<AppState>()(
               });
             }
           }, 0);
+          }
         },
 
         releaseKey: (code) => {
@@ -2637,6 +2671,7 @@ export const useStore = create<AppState>()(
     {
       name: 'vk-settings-v9',
       version: 1,
+      storage: createJSONStorage(() => throttledStorage),
       migrate: (persisted: any, version: number) => {
         if (version === 0) {
           if (typeof persisted.achievementDuration === 'number' && persisted.achievementDuration <= 20) {
@@ -2661,7 +2696,7 @@ export const useStore = create<AppState>()(
         masterPitch: state.masterPitch, octaveShift: state.octaveShift,
         musicalScale: state.musicalScale, scaleEnabled: state.scaleEnabled,
         // Keyboard
-        keySize: state.keySize, showHeatmap: state.showHeatmap, keyHeatmap: state.keyHeatmap,
+        keySize: state.keySize, showHeatmap: state.showHeatmap, keyHeatmap: state.keyHeatmap, heatmapMax: state.heatmapMax,
         // Accessibility
         highContrast: state.highContrast, reduceMotion: state.reduceMotion,
         // Typing
